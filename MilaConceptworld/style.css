@@ -1,0 +1,210 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #fdf6ee;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── Custom cursor ─────────────────────────── */
+#cursor {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  background: #1a1a1a;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: multiply;
+}
+#cursor.hovering {
+  width: 36px;
+  height: 36px;
+  background: #ff4eb8;
+}
+
+/* ── Header ────────────────────────────────── */
+#header {
+  position: relative;
+  z-index: 10;
+  padding: 36px 50px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+#logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  color: #1a1a1a;
+}
+#logo span { color: #ff4eb8; }
+
+#tagline {
+  font-size: 12px;
+  color: #999;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+/* ── Floating decorations ──────────────────── */
+.deco {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50%       { transform: translateY(-8px) rotate(var(--r, 0deg)); }
+}
+
+/* ── Eyes grid ─────────────────────────────── */
+#eyes-grid {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 50px 300px;
+  padding: 20px 50px 60px;
+  max-width: 80%;
+  margin: 100px auto;
+}
+
+/* ── Eye card ──────────────────────────────── */
+.eye-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: none;
+  animation: pop-in .5s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(.5) rotate(-10deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+.eye-card a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.eye-svg{
+  width: 150px;
+  height: 300px;
+}
+
+.eye-svg-wrap {
+  transition: transform .25s cubic-bezier(.34, 1.56, .64, 1);
+}
+.eye-card:hover .eye-svg-wrap {
+  transform: scale(1.18) rotate(-3deg) !important;
+}
+
+.eye-svg {
+  transition: transform .1s;
+}
+
+.eye-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #1a1a1a;
+  letter-spacing: .04em;
+  text-align: center;
+  transition: color .2s;
+}
+.eye-card:hover .eye-label { color: #ff4eb8; }
+
+/* ── Tooltip ───────────────────────────────── */
+#tooltip {
+  position: fixed;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: .65rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 9998;
+  letter-spacing: .1em;
+  opacity: 0;
+  transition: opacity .15s;
+  font-family: 'Fredoka One', cursive;
+  white-space: nowrap;
+}
+#tooltip.visible { opacity: 1; }
+
+/* ── Click ripple ──────────────────────────── */
+.ripple {
+  position: fixed;
+  border-radius: 50%;
+  border: 3px solid #ff4eb8;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 9990;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple-anim .6s ease-out forwards;
+}
+@keyframes ripple-anim {
+  to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+/* ── Responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+
+  #header {
+    padding: 24px 20px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  #logo {
+    font-size: 36px;
+  }
+
+  #tagline {
+    font-size: .65rem;
+    padding-bottom: 0;
+  }
+
+  #eyes-grid {
+    grid-template-columns: 1fr;
+    gap: 16px 0;
+    padding: 16px 20px 40px;
+    max-width: 100%;
+  }
+
+  .eye-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(26,26,26,0.06);
+  }
+
+  .eye-card a {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .eye-svg-wrap svg {
+    width: 64px;
+    height: 56px;
+  }
+
+  .eye-label {
+    font-size: 1rem;
+    text-align: left;
+  }
+}

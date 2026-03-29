@@ -1,0 +1,81 @@
+// ═══════════════════════════════════════════════
+//  CUSTOM CURSOR
+// ═══════════════════════════════════════════════
+const cursor = document.getElementById('cursor');
+
+// Follow mouse
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+
+// Hover targets — all interactive elements
+const hoverTargets = 'a, .tab-btn, .tab-rightbtn, .card, button';
+
+// Use event delegation on document for dynamic elements (e.g. cards built later)
+document.addEventListener('mouseover', e => {
+  if (e.target.closest(hoverTargets)) {
+    cursor.classList.add('hover');
+  }
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest(hoverTargets)) {
+    cursor.classList.remove('hover');
+  }
+});
+
+// Click squeeze
+document.addEventListener('mousedown', () => cursor.classList.add('click'));
+document.addEventListener('mouseup',   () => cursor.classList.remove('click'));
+
+// Hide when leaving window
+document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+// Hide all system cursors
+const styleTag = document.createElement('style');
+styleTag.textContent = `*, *::before, *::after { cursor: none !important; }`;
+document.head.appendChild(styleTag);
+
+
+// ═══════════════════════════════════════════════
+//  NAV TAB — 高亮 + 跳转
+// ═══════════════════════════════════════════════
+
+// 👉 把文件路径换成你实际的页面地址
+const tabPageMap = {
+  'about me':  'index.html',
+  'interests': './interests.html',
+};
+
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+// 页面加载时自动激活当前 tab
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  const tabName = btn.dataset.tab;
+  const tabFile = tabPageMap[tabName]?.split('/').pop();
+  if (tabFile === currentPage) {
+    btn.classList.add('active');
+  }
+
+  // 点击跳转
+  btn.addEventListener('click', () => {
+    if (tabPageMap[tabName]) {
+      window.location.href = tabPageMap[tabName];
+    }
+  });
+});
+
+const rightBtnMap = {
+  'see my CV':  './images/CV_Mila.pdf',  
+  'contact':    './contact.html',
+};
+
+document.querySelectorAll('.tab-rightbtn').forEach(btn => {
+  const tabName = btn.dataset.tab;
+  btn.addEventListener('click', () => {
+    if (rightBtnMap[tabName]) {
+      window.open(rightBtnMap[tabName], '_blank'); // 新标签页打开
+    }
+  });
+});

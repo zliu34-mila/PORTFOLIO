@@ -1,0 +1,63 @@
+@<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ABOUT ME</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <!-- NAV -->
+        <div id="cursor"></div>
+        <nav>
+            <a class="nav-home" href="../../index.html">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7L7 1L13 7V13H9V9H5V13H1V7Z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+                <span>Home</span>
+            </a>
+
+            <div class="nav-tabs">
+                <button class="tab-btn" href="./index.html" data-tab="about me">about me</button>
+                <button class="tab-btn" href="./interests.html"  data-tab="interests">interests</button>
+                <button class="tab-rightbtn" href="../../index.html" data-tab="see my CV">Come to see my CV</button>
+                <button class="tab-rightbtn" href="../../index.html" data-tab="contact">Contact</button>
+            </div>
+        </nav>
+        
+        <!-- STAGE -->
+        <div class="stage" id="stage">
+            <div class="bg-glow"></div>
+        </div>
+
+        <div class="personal-info">
+            <div class="avatar">
+                <img src="./images/mila_avatar.jpg" alt="Avatar">
+                
+            </div>
+            <div class="details">
+                <h2 class="name">Mila Liu</h2>
+                <p class="description">A multidisciplinary designer specializing in spatial design, environmental design, product design, and prototyping. With a passion for creating immersive experiences and interactive environments, I blend creativity and technical skills to bring innovative concepts to life.</p>
+            </div>
+            
+        </div>
+
+        <div >
+
+        </div>
+</body>
+
+<footer class="page-footer">
+        <div class="additional-info">
+            <div class="copyright">
+                    <p>© 2024 Mila Concept World. All rights reserved.</p>
+            </div>
+            <button class="back-to-top" onclick="scrollToTop()">Back to Top</button>
+        </div>
+</footer>
+
+<script src="./interaction.js"></script>
+
+
+</html>

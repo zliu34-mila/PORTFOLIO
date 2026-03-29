@@ -1,0 +1,110 @@
+@<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>INTERESTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <!-- NAV -->
+        <div id="cursor"></div>
+        <nav>
+            <a class="nav-home" href="../../index.html">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7L7 1L13 7V13H9V9H5V13H1V7Z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+                <span>Home</span>
+            </a>
+
+            <div class="nav-tabs">
+                <button class="tab-btn" href="../../index.html" data-tab="about me">about me</button>
+                <button class="tab-btn" href="../../index.html"  data-tab="interests">interests</button>
+                <button class="tab-rightbtn" href="../../index.html" data-tab="see my CV">Come to see my CV</button>
+                <button class="tab-rightbtn" href="../../index.html" data-tab="contact">Contact</button>
+            </div>
+        </nav>
+        
+        <!-- STAGE -->
+        <div class="stage" id="stage">
+            <div class="bg-glow"></div>
+        </div>
+
+        <div class="interests-scene" id="interestsScene">
+            <div class="stack" id="stack">
+
+                <div class="stack-card" data-label="Tennis">
+                    <img src="./images/tennis.jpg" alt="tennis"/>
+                    <div class="stack-card-label">Tennis</div>
+                </div>
+
+                <div class="stack-card" data-label="Jumping">
+                    <img src="./images/outside-activties.jpg" alt="jumping"/>
+                    <div class="stack-card-label">Jumping</div>
+                </div>
+
+                <div class="stack-card" data-label="Biking">
+                    <img src="./images/outside-biking.jpg" alt="biking"/>
+                    <div class="stack-card-label">Biking</div>
+                </div>
+
+                <div class="stack-card" data-label="Hiking">
+                    <img src="./images/outside-hiking.jpg" alt="hiking"/>
+                    <img src="./images/outside-hikingsnow.jpg" alt="hiking"/>
+                    <div class="stack-card-label">Hiking</div>
+                </div>
+
+                <div class="stack-card" data-label="PADDLING">
+                    <img src="./images/outside-paddle.jpg" alt="paddling"/>
+                    <img src="./images/outside-paddle.jpg" alt="paddling"/>
+                    <div class="stack-card-label">Paddling</div>
+                </div>
+
+                <div class="stack-card" data-label="Knitting">
+                    <img src="./images/knitting.jpg" alt="knitting"/>
+                    <div class="stack-card-label">Knitting</div>
+                </div>
+
+                <div class="stack-card" data-label="pottery">
+                    <img src="./images/pottery.jpg" alt="pottery"/>
+                    <div class="stack-card-label">Pottery</div>
+                </div>
+
+                <div class="stack-card" data-label="Actor">
+                    <img src="./images/actor.jpg" alt="Actor"/>
+                    <div class="stack-card-label">Actor</div>
+                </div>
+
+                <div class="stack-card" data-label="Gym">
+                    <img src="./images/gym.jpg" alt="gym"/>
+                    <div class="stack-card-label">Gym</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- LIGHTBOX -->
+        <div class="lightbox" id="lightbox">
+            <button class="lightbox-close" id="lightboxClose">✕</button>
+            <div class="lightbox-inner">
+                <img class="lightbox-img" id="lightboxImg" src="" alt=""/>
+                <div class="lightbox-caption" id="lightboxCaption"></div>
+            </div>
+        </div>
+
+</body>
+
+<footer class="page-footer">
+        <div class="additional-info">
+            <div class="copyright">
+                    <p>© 2024 Mila Concept World. All rights reserved.</p>
+            </div>
+            <button class="back-to-top" onclick="scrollToTop()">Back to Top</button>
+        </div>
+</footer>
+
+<script src="./interaction.js"></script>
+<script src="./interests-interaction.js"></script>
+
+</html>
