@@ -270,7 +270,8 @@ nav::before {
 
 /* 后续 section：从底部滑上来，顶部贴紧导航栏 */
 .section-previousworks,
-.section-processingworks {
+.section-processingworks,
+.section-artworks {
   position: absolute;
   top: 150px;             /* 顶部不超过导航栏 */
   left: 0;
@@ -282,15 +283,18 @@ nav::before {
 
 .section-previousworks   { z-index: 2; transform: translateY(100vh); }
 .section-processingworks { z-index: 3; transform: translateY(100vh); }
+.section-artworks       { z-index: 4; transform: translateY(100vh); }
 
 .section-previousworks.active  { transform: translateY(0); }
 .section-processingworks.active { transform: translateY(0); }
+.section-artworks.active       { transform: translateY(0); }
 
 /* ─────────────────────────────────────
    SECTION CONTENT
 ───────────────────────────────────── */
 .section-previousworks,
-.section-processingworks {
+.section-processingworks,
+.section-artworks {
     display: flex;
     flex-direction: column;
     padding: 40px 60px;
@@ -302,7 +306,8 @@ nav::before {
 }
 
 .previouswork-container,
-.processingworks-content {
+.processingworks-content,
+.artworks-content {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin: 50px;
@@ -311,7 +316,8 @@ nav::before {
 }
 
 .section-previousworks h1,
-.section-processingworks h1 {
+.section-processingworks h1,
+.section-artworks h1 {
     display: flex;
     font-family: 'Google Sans Flex', sans-serif;
     font-size: 24px;
@@ -361,7 +367,7 @@ nav::before {
     margin: 12px 0 0 0;
     color: var(--ink);
     line-height: 1.5;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 0.05em;
 }
 

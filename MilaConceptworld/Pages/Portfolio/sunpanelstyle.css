@@ -224,6 +224,7 @@ nav::before {
 /* 文字区域 */
 .work-title,
 .work-description {
+  width: 80%;
   display: flex;
   flex-direction: column;
   gap: 20px;

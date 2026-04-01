@@ -85,8 +85,8 @@ const videos = [
     './images/video/spacecraft.mp4',
     './images/video/Airflow.mp4',
     './images/video/particles.mp4',
-    './images/video/video4.mp4',
-    './images/video/video5.mp4'
+    './images/video/mushroom.mp4',
+    './images/video/emotion.mp4'
     
 ];
 let currentIndex = 0;
@@ -102,7 +102,8 @@ videoEl.addEventListener('ended', () => {
 const sections = [
     document.querySelector('.section-video'),
     document.querySelector('.section-previousworks'),
-    document.querySelector('.section-processingworks')
+    document.querySelector('.section-processingworks'),
+    document.querySelector('.section-artworks')
 ];
 
 let current = 0;
