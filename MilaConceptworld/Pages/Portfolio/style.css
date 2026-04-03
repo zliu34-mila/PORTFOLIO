@@ -19,7 +19,7 @@
 html, body {
   width: 100%;
   background: var(--white);
-  overflow-x: hidden;   /* 只锁横向，不锁纵向 */
+  overflow-x: hidden;
   font-family: 'DM Mono', monospace;
   color: var(--ink);
 }
@@ -44,16 +44,8 @@ html, body {
     opacity .2s ease;
   mix-blend-mode: difference;
 }
-
-#cursor.hover {
-  width: 38px;
-  height: 38px;
-}
-
-#cursor.click {
-  width: 12px;
-  height: 12px;
-}
+#cursor.hover { width: 38px; height: 38px; }
+#cursor.click { width: 12px; height: 12px; }
 
 /* ─────────────────────────────────────
    NAV
@@ -97,10 +89,7 @@ nav::before {
   pointer-events: all;
 }
 .nav-home:hover { opacity: 0.5; }
-.nav-home svg {
-  flex-shrink: 0;
-  width: 20px; height: 20px;
-}
+.nav-home svg { flex-shrink: 0; width: 20px; height: 20px; }
 
 .nav-tabs {
   display: flex;
@@ -133,9 +122,11 @@ nav::before {
   transform-origin: left;
   transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
+
 .tab-btn:hover         { color: var(--black); }
 .tab-btn.active        { color: var(--black); }
-.tab-btn.active::after { transform: scaleX(1); }
+.tab-btn:hover::after  { transform: scaleX(1); }
+.tab-btn.active::after { transform: scaleX(0); }
 
 .tab-rightbtn {
   font-family: 'Lexend Deca', sans-serif;
@@ -154,9 +145,7 @@ nav::before {
 .tab-rightbtn:hover  { color: var(--black); }
 .tab-rightbtn.active { color: var(--black); }
 
-.nav-tabs button:last-child {
-  margin-left: auto;
-}
+.nav-tabs button:last-child { margin-left: auto; }
 
 /* ─────────────────────────────────────
    ATMOSPHERIC GLOW
@@ -188,8 +177,7 @@ nav::before {
 
 .video-container {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
@@ -205,8 +193,7 @@ nav::before {
 .video-container::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
@@ -227,13 +214,13 @@ nav::before {
     width: 30%;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 20px;
+    padding-left: 50px;
     z-index: 2;
     color: #ffffff;
     font-size: 24px;
     font-family: 'Google Sans Flex', sans-serif;
     text-transform: capitalize;
-    gap: 50px;
+    gap: 70px;
 }
 
 .header-title h1 {
@@ -248,42 +235,39 @@ nav::before {
 .scroll-wrapper {
   width: 100%;
   height: 100vh;
-  position: fixed;        /* 整个舞台固定在视口 */
+  position: fixed;
   top: 0;
   left: 0;
-  overflow: hidden;       /* 防止滑动时露出底部空白 */
+  overflow: hidden;
 }
 
 /* ─────────────────────────────────────
    SECTIONS
 ───────────────────────────────────── */
-
-/* section-video：固定在导航栏下方，不参与滑动 */
 .section-video {
   position: absolute;
-  top: 150px;             /* nav 高度 */
+  top: 150px;
   left: 0;
   width: 100%;
   height: calc(100vh - 150px);
   z-index: 1;
 }
 
-/* 后续 section：从底部滑上来，顶部贴紧导航栏 */
 .section-previousworks,
 .section-processingworks,
 .section-artworks {
   position: absolute;
-  top: 150px;             /* 顶部不超过导航栏 */
+  top: 150px;
   left: 0;
   width: 100%;
-  height: calc(100vh - 150px);  /* 剩余视口高度 */
-  overflow-y: auto;       /* 内容超出时可在 section 内滚动 */
+  height: calc(100vh - 150px);
+  overflow-y: auto;
   transition: transform 0.8s cubic-bezier(0.77, 0, 0.18, 1);
 }
 
 .section-previousworks   { z-index: 2; transform: translateY(100vh); }
 .section-processingworks { z-index: 3; transform: translateY(100vh); }
-.section-artworks       { z-index: 4; transform: translateY(100vh); }
+.section-artworks        { z-index: 4; transform: translateY(100vh); }
 
 .section-previousworks.active  { transform: translateY(0); }
 .section-processingworks.active { transform: translateY(0); }
@@ -356,9 +340,7 @@ nav::before {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.previouswork img:hover {
-    transform: scale(1.03);
-}
+.previouswork img:hover { transform: scale(1.03); }
 
 .previouswork-description h2 {
     font-family: 'Google Sans Flex', sans-serif;
@@ -370,6 +352,128 @@ nav::before {
     text-transform: capitalize;
     letter-spacing: 0.05em;
 }
+
+/* ─────────────────────────────────────
+   SECTION INTRO — 大图 + 文字叠加
+───────────────────────────────────── */
+.section-intro {
+  position: absolute;
+  top: 150px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 150px);
+  overflow: hidden;
+  z-index: 2;
+  transform: translateY(100vh);
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.18, 1);
+}
+ 
+.section-intro.active {
+  transform: translateY(0);
+}
+ 
+/* ── 背景大图 ── */
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+ 
+.intro-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+ 
+.section-intro.active .intro-bg img {
+  transform: scale(1.04);   /* 进入时轻微放大，增加动感 */
+}
+ 
+/* ── 渐变遮罩 ── */
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse 70% 50% at 50% 20%, rgba(210,70,140,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 30% 70%, rgba(180,60,120,.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 70% 65%, rgba(200,80,130,.08) 0%, transparent 60%),
+    #f5f4f0;
+}
+ 
+/* ── 文字层 ── */
+.intro-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px 64px;
+}
+ 
+.intro-label {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  backdrop-filter: blur(6px);
+  background: rgba(255,255,255,0.08);
+}
+ 
+/* 底部主文字 */
+.intro-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1000px;
+  margin-bottom: 200px;
+}
+ 
+.intro-name {
+  font-family: 'Google Sans Flex', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 200;
+  color: #000000;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 0;
+ 
+  /* 进入动画 */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease 0.3s, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+}
+ 
+.intro-bio {
+  font-family:  'Google Sans Flex', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.72);
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  border-left: 2px solid var(--line);
+  padding-left: 18px;
+ 
+  /* 进入动画 */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 0.5s, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+}
+ 
+/* active 时触发文字动画 */
+.section-intro.active .intro-name,
+.section-intro.active .intro-bio {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 /* ─────────────────────────────────────
    FOOTER
@@ -411,7 +515,85 @@ nav::before {
 }
 
 /* ─────────────────────────────────────
-   RESPONSIVE ≤ 768px
+   RESPONSIVE — Mac / 中等屏幕
+   769px ~ 1440px
+───────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1440px) {
+
+  /* nav 压缩高度 */
+  nav {
+    height: 72px;
+    padding: 0 36px;
+  }
+
+  .nav-home {
+    font-size: 15px;
+    padding: 0 28px;
+    margin-right: 24px;
+  }
+
+  .tab-btn {
+    font-size: 11px;
+    padding: 0 16px;
+  }
+
+  .tab-rightbtn {
+    font-size: 11px;
+    padding: 0 16px;
+  }
+
+  /* section 顶部跟随 nav 高度 */
+  .section-video {
+    top: 72px;
+    height: calc(100vh - 72px);
+  }
+
+  .section-previousworks,
+  .section-processingworks,
+  .section-artworks {
+    top: 72px;
+    height: calc(100vh - 72px);
+  }
+
+  /* header title 字号略缩 */
+  .header-title {
+    gap: 70px;
+  }
+
+  .header-title h1 {
+    font-size: 2.2rem;
+  }
+
+  /* 卡片网格间距缩小 */
+  .previouswork-container,
+  .processingworks-content,
+  .artworks-content {
+    margin: 32px;
+    gap: 48px;
+  }
+
+  .section-previousworks,
+  .section-processingworks,
+  .section-artworks {
+    padding: 32px 48px;
+  }
+}
+
+  .section-intro {
+    top: 72px;
+    height: calc(100vh - 72px);
+  }
+ 
+  .intro-content {
+    padding: 36px 48px;
+  }
+ 
+  .intro-name {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+  }
+
+/* ─────────────────────────────────────
+   RESPONSIVE — 手机端 ≤ 768px
 ───────────────────────────────────── */
 @media (max-width: 768px) {
 
@@ -449,18 +631,47 @@ nav::before {
     overflow-y: auto;
     height: 100vh;
   }
+
   .avatar img { width: 60%; border-radius: 50%; }
   .details .name { font-size: 1.6rem; }
 
   .previouswork-container,
-  .processingworks-content {
+  .processingworks-content,
+  .artworks-content {
     grid-template-columns: 1fr;
     margin: 20px;
     gap: 40px;
   }
 
   .section-previousworks,
-  .section-processingworks {
+  .section-processingworks,
+  .section-artworks {
     padding: 24px;
   }
+
+  .header-title {
+    width: 80%;
+    gap: 24px;
+  }
+
+  .header-title h1 {
+    font-size: 1.8rem;
+  }
+    .section-intro {
+    top: 0;
+    height: 100vh;
+  }
+ 
+  .intro-content {
+    padding: 100px 24px 40px;
+  }
+ 
+  .intro-name {
+    font-size: 3rem;
+  }
+ 
+  .intro-bio {
+    font-size: 13px;
+  }
+
 }

@@ -1,0 +1,486 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#wf {
+  width: 100%; background: #f5f4f1; font-family: 'Helvetica Neue', Arial, sans-serif;
+  border-radius: 12px; overflow: hidden; min-height: 700px;
+}
+.top-nav {
+  background: #598566; padding: 0 24px;
+  display: flex; align-items: center; height: 48px; gap: 32px;
+}
+.nav-logo { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+.nav-tabs { display: flex; gap: 2px; margin-left: 8px; }
+.nav-tab {
+  font-size: 11px; color: rgba(255,255,255,0.45); padding: 6px 14px;
+  border-radius: 4px; cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s;
+  border: none; background: none;
+}
+.nav-tab.active { color: #fff; background: rgba(255,255,255,0.1); }
+.nav-tab:hover { color: rgba(255,255,255,0.8); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #7ab648; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.live-txt { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+.date-txt { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+.main-layout { display: grid; grid-template-columns: 220px 1fr 240px; gap: 0; height: calc(700px - 48px); }
+
+/* Left sidebar */
+.sidebar {
+  background: #fff; border-right: 1px solid #e8e6e0;
+  padding: 20px 0; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-section { padding: 0 16px 16px; border-bottom: 1px solid #f0ede8; margin-bottom: 4px; }
+.sidebar-section:last-child { border-bottom: none; }
+.slab { font-size: 9px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 10px; }
+
+.stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.stat-name { font-size: 11px; color: #666; }
+.stat-val { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.stat-sub { font-size: 10px; color: #aaa; }
+
+.bar-wrap { height: 3px; background: #f0ede8; border-radius: 2px; margin: 3px 0 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+
+.worker-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 6px; margin-bottom: 2px; cursor: pointer; transition: background 0.15s;
+}
+.worker-item:hover { background: #f5f4f1; }
+.worker-item.selected { background: #f0ede8; }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; flex-shrink: 0;
+}
+.winfo { flex: 1; min-width: 0; }
+.wname { font-size: 11px; color: #1a1a1a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wrole { font-size: 9px; color: #aaa; }
+.wstatus { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Center */
+.center-panel { display: flex; flex-direction: column; overflow: hidden; }
+
+.metrics-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  padding: 16px 16px 12px; background: #f5f4f1;
+}
+.metric-card {
+  background: #fff; border-radius: 8px; padding: 12px 14px;
+  border: 1px solid #e8e6e0;
+}
+.mc-label { font-size: 9px; color: #aaa; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.mc-val { font-size: 22px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+.mc-sub { font-size: 10px; color: #aaa; margin-top: 4px; }
+.mc-tag { display: inline-block; font-size: 9px; padding: 2px 7px; border-radius: 3px; margin-top: 5px; }
+
+/* Map area */
+.map-area {
+  flex: 1; background: #fff; margin: 0 16px 12px;
+  border-radius: 8px; border: 1px solid #e8e6e0;
+  position: relative; overflow: hidden;
+}
+.map-header {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; z-index: 5;
+  background: rgba(255,255,255,0.95); border-bottom: 1px solid #f0ede8;
+}
+.map-title { font-size: 11px; font-weight: 600; color: #1a1a1a; letter-spacing: 0.5px; }
+.map-legend { display: flex; gap: 12px; }
+.leg-item { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #888; }
+.leg-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.map-svg-wrap { position: absolute; inset: 40px 0 0 0; }
+
+/* Task list */
+.task-section { padding: 0 16px 12px; }
+.ts-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.ts-title { font-size: 10px; letter-spacing: 1.5px; color: #aaa; text-transform: uppercase; }
+.ts-btn {
+  font-size: 9px; color: #888; border: 1px solid #e8e6e0; border-radius: 4px;
+  padding: 3px 8px; background: none; cursor: pointer;
+}
+.task-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.task-card {
+  background: #fff; border: 1px solid #e8e6e0; border-radius: 7px;
+  padding: 9px 11px; cursor: pointer; transition: all 0.2s;
+}
+.task-card:hover { border-color: #c8c4bc; }
+.task-card.urgent { border-left: 2px solid #e05a2b; }
+.task-card.active-t { border-left: 2px solid #7ab648; }
+.task-card.done { border-left: 2px solid #c8c4bc; opacity: 0.7; }
+.tc-zone { font-size: 10px; font-weight: 600; color: #1a1a1a; margin-bottom: 3px; }
+.tc-detail { font-size: 9px; color: #999; line-height: 1.5; }
+.tc-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+.tc-worker { font-size: 9px; color: #888; }
+.tc-badge {
+  font-size: 8px; padding: 2px 6px; border-radius: 3px; font-weight: 500;
+}
+
+/* Right panel */
+.right-panel {
+  background: #fff; border-left: 1px solid #e8e6e0;
+  padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;
+}
+.rp-section {}
+.rp-title { font-size: 9px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 10px; }
+
+.perf-row { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.perf-av { width: 26px; height: 26px; border-radius: 50%; font-size: 9px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.perf-info { flex: 1; min-width: 0; }
+.perf-name { font-size: 11px; color: #1a1a1a; font-weight: 500; }
+.perf-bar-wrap { height: 2px; background: #f0ede8; border-radius: 1px; margin-top: 4px; overflow: hidden; }
+.perf-bar { height: 100%; border-radius: 1px; }
+.perf-score { font-size: 12px; font-weight: 700; color: #1a1a1a; }
+
+.attend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.attend-card { background: #f5f4f1; border-radius: 6px; padding: 9px 10px; }
+.ac-num { font-size: 20px; font-weight: 700; color: #1a1a1a; }
+.ac-lab { font-size: 9px; color: #aaa; margin-top: 2px; }
+
+.alert-feed { display: flex; flex-direction: column; gap: 6px; }
+.af-item {
+  display: flex; gap: 8px; padding: 8px 10px; border-radius: 6px;
+  font-size: 10px; line-height: 1.5; cursor: pointer; transition: opacity 0.2s;
+}
+.af-item:hover { opacity: 0.8; }
+.af-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.af-text { color: #555; }
+.af-time { font-size: 9px; color: #bbb; margin-top: 1px; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.sparkline { display: flex; align-items: flex-end; gap: 3px; height: 36px; margin-top: 8px; }
+.sp-bar {
+  flex: 1; border-radius: 2px 2px 0 0; min-height: 4px;
+  transition: height 0.5s ease;
+}
+</style>
+
+<div id="wf">
+<div class="top-nav">
+  <div class="nav-logo">GreenOps</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+    <button class="nav-tab" onclick="switchTab('tasks')">Tasks</button>
+    <button class="nav-tab" onclick="switchTab('attendance')">Attendance</button>
+    <button class="nav-tab" onclick="switchTab('performance')">Performance</button>
+  </div>
+  <div class="nav-right">
+    <div class="live-dot"></div>
+    <div class="live-txt">LIVE</div>
+    <div class="date-txt">Fri 04 Apr 2026 · 09:41</div>
+  </div>
+</div>
+
+<div class="main-layout">
+
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="slab">Workforce Status</div>
+    <div class="stat-row"><span class="stat-name">On duty</span><span class="stat-val">34 <span class="stat-sub">/ 40</span></span></div>
+    <div class="bar-wrap"><div class="bar-fill" style="width:85%;background:#7ab648;"></div></div>
+    <div class="stat-row"><span class="stat-name">Active tasks</span><span class="stat-val">18</span></div>
+    <div class="bar-wrap"><div class="bar-fill" style="width:60%;background:#e0a030;"></div></div>
+    <div class="stat-row"><span class="stat-name">Completed today</span><span class="stat-val">12</span></div>
+    <div class="bar-wrap"><div class="bar-fill" style="width:40%;background:#5c9ede;"></div></div>
+  </div>
+
+  <div class="sidebar-section" style="flex:1;overflow-y:auto;">
+    <div class="slab">Field Workers</div>
+    <div id="worker-list"></div>
+  </div>
+</div>
+
+<!-- CENTER -->
+<div class="center-panel">
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="mc-label">Coverage rate</div>
+      <div class="mc-val">87<span style="font-size:14px;font-weight:400;color:#aaa;">%</span></div>
+      <div class="mc-tag" style="background:#eef6e6;color:#5a8a30;">↑ 3% vs yesterday</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">Avg response time</div>
+      <div class="mc-val">14<span style="font-size:14px;font-weight:400;color:#aaa;">min</span></div>
+      <div class="mc-tag" style="background:#fef3e6;color:#b07020;">↓ 2 min slower</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">Waste collected</div>
+      <div class="mc-val">8.4<span style="font-size:14px;font-weight:400;color:#aaa;">t</span></div>
+      <div class="mc-tag" style="background:#eef6e6;color:#5a8a30;">On target</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">Pending alerts</div>
+      <div class="mc-val" style="color:#e05a2b;">3</div>
+      <div class="mc-tag" style="background:#fdeee8;color:#c04820;">Needs attention</div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-area">
+    <div class="map-header">
+      <div class="map-title">District Deployment Map</div>
+      <div class="map-legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#7ab648;"></div>Active</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e0a030;"></div>In transit</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e05a2b;"></div>Alert zone</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#c8c4bc;"></div>Idle</div>
+      </div>
+    </div>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 560 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="560" height="260" fill="#f8f7f4"/>
+        <!-- grid -->
+        <line x1="0" y1="86" x2="560" y2="86" stroke="#e8e4dc" stroke-width="1"/>
+        <line x1="0" y1="172" x2="560" y2="172" stroke="#e8e4dc" stroke-width="1"/>
+        <line x1="140" y1="0" x2="140" y2="260" stroke="#e8e4dc" stroke-width="1"/>
+        <line x1="280" y1="0" x2="280" y2="260" stroke="#e8e4dc" stroke-width="1"/>
+        <line x1="420" y1="0" x2="420" y2="260" stroke="#e8e4dc" stroke-width="1"/>
+        <!-- roads -->
+        <line x1="0" y1="86" x2="560" y2="86" stroke="#e0dbd0" stroke-width="7"/>
+        <line x1="0" y1="172" x2="560" y2="172" stroke="#e0dbd0" stroke-width="7"/>
+        <line x1="140" y1="0" x2="140" y2="260" stroke="#e0dbd0" stroke-width="7"/>
+        <line x1="280" y1="0" x2="280" y2="260" stroke="#e0dbd0" stroke-width="7"/>
+        <line x1="420" y1="0" x2="420" y2="260" stroke="#e0dbd0" stroke-width="7"/>
+        <!-- secondary -->
+        <line x1="70" y1="0" x2="70" y2="260" stroke="#eae6de" stroke-width="3"/>
+        <line x1="210" y1="0" x2="210" y2="260" stroke="#eae6de" stroke-width="3"/>
+        <line x1="350" y1="0" x2="350" y2="260" stroke="#eae6de" stroke-width="3"/>
+        <line x1="490" y1="0" x2="490" y2="260" stroke="#eae6de" stroke-width="3"/>
+        <line x1="0" y1="43" x2="560" y2="43" stroke="#eae6de" stroke-width="3"/>
+        <line x1="0" y1="129" x2="560" y2="129" stroke="#eae6de" stroke-width="3"/>
+        <line x1="0" y1="215" x2="560" y2="215" stroke="#eae6de" stroke-width="3"/>
+        <!-- district fills -->
+        <rect x="1" y="1" width="138" height="84" fill="rgba(122,182,72,0.06)" rx="1"/>
+        <rect x="142" y="1" width="137" height="84" fill="rgba(224,90,43,0.07)" rx="1"/>
+        <rect x="282" y="1" width="137" height="84" fill="rgba(92,158,222,0.06)" rx="1"/>
+        <rect x="1" y="88" width="138" height="83" fill="rgba(224,160,48,0.07)" rx="1"/>
+        <rect x="142" y="88" width="137" height="83" fill="rgba(122,182,72,0.07)" rx="1"/>
+        <rect x="282" y="88" width="137" height="83" fill="rgba(224,90,43,0.06)" rx="1"/>
+        <rect x="422" y="88" width="137" height="83" fill="rgba(92,158,222,0.05)" rx="1"/>
+        <rect x="1" y="174" width="138" height="84" fill="rgba(122,182,72,0.05)" rx="1"/>
+        <rect x="142" y="174" width="137" height="84" fill="rgba(224,160,48,0.05)" rx="1"/>
+        <rect x="282" y="174" width="137" height="84" fill="rgba(122,182,72,0.05)" rx="1"/>
+        <!-- park zone -->
+        <rect x="44" y="100" width="60" height="48" fill="#e8f0dc" rx="3"/>
+        <circle cx="62" cy="116" r="7" fill="#c8dca8"/>
+        <circle cx="80" cy="124" r="6" fill="#c0d8a0"/>
+        <circle cx="96" cy="112" r="8" fill="#c4dca4"/>
+        <!-- buildings -->
+        <rect x="152" y="12" width="24" height="20" fill="#e4dfd6" rx="1"/>
+        <rect x="180" y="8" width="18" height="24" fill="#dedad0" rx="1"/>
+        <rect x="294" y="10" width="30" height="22" fill="#e4dfd6" rx="1"/>
+        <rect x="330" y="14" width="20" height="18" fill="#dedad0" rx="1"/>
+        <rect x="152" y="100" width="50" height="30" fill="#e4dfd6" rx="1"/>
+        <rect x="294" y="96" width="40" height="35" fill="#e8e4da" rx="1"/>
+        <rect x="432" y="10" width="35" height="25" fill="#e4dfd6" rx="1"/>
+        <rect x="474" y="6" width="25" height="30" fill="#dedad0" rx="1"/>
+        <!-- district labels -->
+        <text x="16" y="20" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">North CBD</text>
+        <text x="156" y="20" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">East Comm.</text>
+        <text x="296" y="20" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">West Res.</text>
+        <text x="430" y="20" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">North Lake</text>
+        <text x="16" y="106" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">Park Zone</text>
+        <text x="156" y="106" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">Central</text>
+        <text x="296" y="106" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">South Comm.</text>
+        <text x="430" y="106" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">East Res.</text>
+        <text x="16" y="192" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">South Park</text>
+        <text x="156" y="192" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">Industrial</text>
+        <text x="296" y="192" fill="rgba(80,70,50,0.35)" font-size="9" font-family="Arial" letter-spacing="0.5">Riverside</text>
+        <!-- alert zones -->
+        <circle cx="211" cy="43" r="18" fill="rgba(224,90,43,0.1)" stroke="rgba(224,90,43,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+        <circle cx="336" cy="129" r="14" fill="rgba(224,90,43,0.08)" stroke="rgba(224,90,43,0.25)" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- worker dots animated -->
+        <g id="map-workers"></g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="task-section">
+    <div class="ts-header">
+      <div class="ts-title">Active task assignments</div>
+      <button class="ts-btn">+ Assign new</button>
+    </div>
+    <div class="task-grid" id="task-grid"></div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+
+  <div class="rp-section">
+    <div class="rp-title">Performance today</div>
+    <div id="perf-list"></div>
+  </div>
+
+  <div class="rp-section">
+    <div class="rp-title">Attendance</div>
+    <div class="attend-grid">
+      <div class="attend-card"><div class="ac-num">34</div><div class="ac-lab">On duty</div></div>
+      <div class="attend-card"><div class="ac-num">4</div><div class="ac-lab">Off / leave</div></div>
+      <div class="attend-card"><div class="ac-num">2</div><div class="ac-lab">Unconfirmed</div></div>
+      <div class="attend-card"><div class="ac-num" style="color:#e05a2b;">1</div><div class="ac-lab">Absent</div></div>
+    </div>
+    <div class="sparkline" id="attend-spark"></div>
+    <div style="font-size:9px;color:#bbb;margin-top:3px;text-align:center;">Attendance rate — past 7 days</div>
+  </div>
+
+  <div class="rp-section">
+    <div class="rp-title">Operational alerts</div>
+    <div class="alert-feed" id="alert-feed"></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<script>
+const workers = [
+  {name:"Li Wei", role:"Team Lead A", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"Central"},
+  {name:"Chen Fang", role:"Sweep · North CBD", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"North CBD"},
+  {name:"Wang Jing", role:"Sweep · Park Zone", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"Park Zone"},
+  {name:"Zhang Min", role:"In transit", status:"transit", color:"#e0a030", bg:"#fef3e6", zone:"Central"},
+  {name:"Liu Yang", role:"Sweep · East", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"East Comm."},
+  {name:"Zhao Lei", role:"Team Lead B", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"South Comm."},
+  {name:"Sun Mei", role:"Idle · standby", status:"idle", color:"#c8c4bc", bg:"#f5f4f1", zone:"—"},
+  {name:"Wu Hao", role:"Sweep · Riverside", status:"active", color:"#7ab648", bg:"#eef6e6", zone:"Riverside"},
+];
+
+const tasks = [
+  {zone:"East Comm. · Blk 3", detail:"Pollen accumulation\nhigh — immediate sweep", worker:"Chen Fang", status:"urgent"},
+  {zone:"Park Zone · Main Path", detail:"Scheduled leaf\ncollection round 2", worker:"Wang Jing", status:"active-t"},
+  {zone:"Central · Plaza", detail:"Post-event cleanup\nassigned 3 workers", worker:"Li Wei", status:"active-t"},
+  {zone:"South Comm. · St. 5", detail:"Grass clipping\nroute sweep", worker:"Zhao Lei", status:"active-t"},
+  {zone:"North CBD · Entry", detail:"Morning sweep\ncompleted ✓", worker:"Liu Yang", status:"done"},
+  {zone:"Riverside · Walk", detail:"Branch clearance\nafter wind event", worker:"Wu Hao", status:"urgent"},
+];
+
+const perfData = [
+  {name:"Li Wei", initials:"LW", bg:"#eef6e6", color:"#5a8a30", score:94},
+  {name:"Zhao Lei", initials:"ZL", bg:"#eef3fe", color:"#3a6aae", score:91},
+  {name:"Wang Jing", initials:"WJ", bg:"#fef3e6", color:"#b07020", score:88},
+  {name:"Wu Hao", initials:"WH", bg:"#fdeee8", color:"#c04820", score:85},
+  {name:"Liu Yang", initials:"LY", bg:"#f5f4f1", color:"#888", score:79},
+];
+
+const alerts = [
+  {color:"#e05a2b", text:"East Comm. Blk 3 — pollen index critical, sweep overdue 18 min", time:"09:38"},
+  {color:"#e05a2b", text:"Riverside Walk — branch obstruction reported by resident", time:"09:21"},
+  {color:"#e0a030", text:"Zhang Min unresponsive — last GPS ping 14 min ago", time:"09:19"},
+  {color:"#7ab648", text:"Central Plaza task completed ahead of schedule", time:"08:55"},
+  {color:"#5c9ede", text:"Staffing gap forecast for 14:00–16:00 shift in South Comm.", time:"08:30"},
+];
+
+const mapPositions = [
+  {cx:60,cy:50,s:"active"},{cx:200,cy:55,s:"transit"},{cx:70,cy:130,s:"active"},
+  {cx:190,cy:130,s:"active"},{cx:320,cy:50,s:"active"},{cx:310,cy:145,s:"alert"},
+  {cx:460,cy:55,s:"active"},{cx:100,cy:210,s:"active"},{cx:200,cy:210,s:"idle"},
+  {cx:330,cy:210,s:"active"},{cx:470,cy:140,s:"active"},{cx:530,cy:55,s:"active"},
+];
+
+const dotColor = {active:"#7ab648",transit:"#e0a030",alert:"#e05a2b",idle:"#c8c4bc"};
+
+function buildWorkers() {
+  const el = document.getElementById('worker-list');
+  workers.forEach((w,i)=>{
+    const d = document.createElement('div');
+    d.className = 'worker-item' + (i===0?' selected':'');
+    d.innerHTML = `<div class="avatar" style="background:${w.bg};color:${w.color};">${w.name.split(' ').map(n=>n[0]).join('')}</div><div class="winfo"><div class="wname">${w.name}</div><div class="wrole">${w.role}</div></div><div class="wstatus" style="background:${w.color};"></div>`;
+    d.onclick = ()=>{document.querySelectorAll('.worker-item').forEach(x=>x.classList.remove('selected'));d.classList.add('selected');};
+    el.appendChild(d);
+  });
+}
+
+function buildTasks() {
+  const el = document.getElementById('task-grid');
+  const badge = {urgent:['#fdeee8','#c04820','Urgent'],['active-t']:['#eef6e6','#5a8a30','Active'],done:['#f5f4f1','#aaa','Done']};
+  tasks.forEach(t=>{
+    const b = badge[t.status]||badge['done'];
+    const d = document.createElement('div');
+    d.className = 'task-card '+t.status;
+    d.innerHTML = `<div class="tc-zone">${t.zone}</div><div class="tc-detail">${t.detail.replace('\n','<br>')}</div><div class="tc-foot"><span class="tc-worker">${t.worker}</span><span class="tc-badge" style="background:${b[0]};color:${b[1]};">${b[2]}</span></div>`;
+    el.appendChild(d);
+  });
+}
+
+function buildPerf() {
+  const el = document.getElementById('perf-list');
+  perfData.forEach(p=>{
+    const d = document.createElement('div');
+    d.className = 'perf-row';
+    d.innerHTML = `<div class="perf-av" style="background:${p.bg};color:${p.color};">${p.initials}</div><div class="perf-info"><div class="perf-name">${p.name}</div><div class="perf-bar-wrap"><div class="perf-bar" style="width:${p.score}%;background:${p.color};"></div></div></div><div class="perf-score">${p.score}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function buildAlerts() {
+  const el = document.getElementById('alert-feed');
+  alerts.forEach(a=>{
+    const d = document.createElement('div');
+    d.className = 'af-item';
+    d.style.background = a.color==='#e05a2b'?'rgba(224,90,43,0.05)':a.color==='#e0a030'?'rgba(224,160,48,0.05)':'rgba(122,182,72,0.05)';
+    d.innerHTML = `<div class="af-dot" style="background:${a.color};"></div><div><div class="af-text">${a.text}</div><div class="af-time">${a.time}</div></div>`;
+    el.appendChild(d);
+  });
+}
+
+function buildMapDots() {
+  const g = document.getElementById('map-workers');
+  mapPositions.forEach((p,i)=>{
+    const c = dotColor[p.s];
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx',p.cx); circle.setAttribute('cy',p.cy);
+    circle.setAttribute('r','5'); circle.setAttribute('fill',c);
+    circle.setAttribute('stroke','#fff'); circle.setAttribute('stroke-width','1.5');
+    circle.style.cursor='pointer';
+    if(p.s==='active'||p.s==='alert'){
+      const anim = document.createElementNS('http://www.w3.org/2000/svg','animate');
+      anim.setAttribute('attributeName','opacity');
+      anim.setAttribute('values','1;0.4;1'); anim.setAttribute('dur',(2+i*0.3)+'s');
+      anim.setAttribute('repeatCount','indefinite');
+      circle.appendChild(anim);
+    }
+    g.appendChild(circle);
+    if(p.s==='alert'){
+      const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      ring.setAttribute('cx',p.cx); ring.setAttribute('cy',p.cy);
+      ring.setAttribute('r','10'); ring.setAttribute('fill','none');
+      ring.setAttribute('stroke',c); ring.setAttribute('stroke-width','1');
+      ring.setAttribute('opacity','0.35');
+      g.appendChild(ring);
+    }
+  });
+}
+
+function buildSpark() {
+  const rates = [82,88,85,90,87,91,87];
+  const el = document.getElementById('attend-spark');
+  const max = Math.max(...rates);
+  rates.forEach((v,i)=>{
+    const b = document.createElement('div');
+    b.className='sp-bar';
+    b.style.cssText=`height:${Math.round((v/max)*32)}px;background:${i===rates.length-1?'#7ab648':'#d8d4cc'};`;
+    el.appendChild(b);
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{
+    const tabs=['overview','tasks','attendance','performance'];
+    t.classList.toggle('active', tabs[i]===tab);
+  });
+}
+
+buildWorkers();
+buildTasks();
+buildPerf();
+buildAlerts();
+buildMapDots();
+buildSpark();
+</script>

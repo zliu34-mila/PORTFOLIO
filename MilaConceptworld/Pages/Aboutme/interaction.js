@@ -46,6 +46,7 @@ document.head.appendChild(styleTag);
 const tabPageMap = {
   'about me':  'index.html',
   'interests': './interests.html',
+
 };
 
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -68,7 +69,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 const rightBtnMap = {
   'see my CV':  './images/CV_Mila.pdf',  
-  'contact':    './contact.html',
+  'back': '../Portfolio/index.html',
 };
 
 document.querySelectorAll('.tab-rightbtn').forEach(btn => {
