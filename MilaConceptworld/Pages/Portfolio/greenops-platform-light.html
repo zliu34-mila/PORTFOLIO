@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GreenOps — Urban Organic Waste Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --white:    #ffffff;
+  --bg:       #f7f7f8;
+  --bg2:      #f0f0f2;
+  --bg3:      #e8e8ec;
+  --border:   #e4e4e8;
+  --border2:  #d8d8de;
+  --ink:      #111114;
+  --ink2:     #52525c;
+  --ink3:     #8888a0;
+  --ink4:     #b0b0c4;
+  --green:    #1a8a4a;
+  --green-l:  #e8f5ee;
+  --amber:    #b86a00;
+  --amber-l:  #fff4e0;
+  --red:      #c02020;
+  --red-l:    #ffeaea;
+  --blue:     #1a5ab8;
+  --blue-l:   #e8f0fc;
+  --gray-l:   #f0f0f4;
+  --accent:   #1a8a4a;
+  --r:        8px;
+  --r-lg:     12px;
+  --sans:     'Outfit', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --shadow:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── NAV ── */
+.topbar {
+  height: 48px; flex-shrink: 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 0;
+}
+.tb-logo {
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.3px; margin-right: 24px; white-space: nowrap;
+}
+.tb-logo span { color: var(--accent); }
+.tb-nav { display: flex; gap: 1px; flex: 1; }
+.tb-btn {
+  font-family: var(--sans); font-size: 12px; font-weight: 400;
+  color: var(--ink3); padding: 0 14px; height: 48px;
+  border: none; background: none; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+}
+.tb-btn:hover { color: var(--ink2); }
+.tb-btn.active { color: var(--ink); border-bottom-color: var(--accent); font-weight: 500; }
+.tb-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.live-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 10px; color: var(--ink3); letter-spacing: 0.5px;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.tb-date { font-family: var(--mono); font-size: 10px; color: var(--ink4); }
+.tb-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500; color: var(--ink2); cursor: pointer;
+}
+
+/* ── SHELL ── */
+.shell { display: flex; flex: 1; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 200px; flex-shrink: 0;
+  background: var(--white); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow-y: auto; padding: 16px 10px;
+}
+.sb-section { margin-bottom: 20px; }
+.sb-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px;
+  color: var(--ink4); text-transform: uppercase;
+  padding: 0 8px; margin-bottom: 6px;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 8px; border-radius: var(--r);
+  cursor: pointer; transition: background 0.12s;
+  border: none; background: none; width: 100%; text-align: left;
+}
+.sb-item:hover { background: var(--bg); }
+.sb-item.active { background: var(--green-l); }
+.sb-item.active .sb-text { color: var(--green); font-weight: 500; }
+.sb-item.active .sb-icon { background: rgba(26,138,74,0.12); color: var(--green); }
+.sb-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--bg2); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; flex-shrink: 0;
+  transition: background 0.12s;
+}
+.sb-text { font-size: 12px; color: var(--ink2); line-height: 1; }
+.sb-sub  { font-size: 10px; color: var(--ink4); margin-top: 1px; }
+.sb-divider { height: 1px; background: var(--border); margin: 8px 0 16px; }
+
+.sb-user {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px; background: var(--bg); border-radius: var(--r);
+  border: 1px solid var(--border);
+}
+.sb-user-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--green-l); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; flex-shrink: 0;
+}
+.sb-user-name { font-size: 12px; font-weight: 500; color: var(--ink); }
+.sb-user-role { font-size: 10px; color: var(--ink3); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Page head */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; background: var(--white);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.ph-title { font-size: 16px; font-weight: 600; color: var(--ink); }
+.ph-sub { font-family: var(--mono); font-size: 10px; color: var(--ink3); margin-top: 2px; }
+.ph-actions { display: flex; gap: 8px; align-items: center; }
+
+/* Buttons */
+.btn {
+  font-family: var(--sans); font-size: 12px; font-weight: 400;
+  padding: 6px 14px; border-radius: var(--r); cursor: pointer;
+  transition: all 0.12s; white-space: nowrap;
+}
+.btn-ghost { border: 1px solid var(--border); background: none; color: var(--ink2); }
+.btn-ghost:hover { background: var(--bg2); border-color: var(--border2); }
+.btn-solid { border: none; background: var(--ink); color: #fff; }
+.btn-solid:hover { background: #2a2a30; }
+.btn-green { border: none; background: var(--green); color: #fff; }
+.btn-green:hover { background: #167040; }
+
+/* Page body */
+.page-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.page-section { display: none; }
+.page-section.active { display: block; animation: fadein 0.18s ease; }
+@keyframes fadein { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── CARDS ── */
+.card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 16px 18px; box-shadow: var(--shadow);
+}
+.card-sm { padding: 12px 14px; }
+
+/* Metric cards */
+.metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 16px; }
+.metric { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 14px 16px; }
+.m-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; color: var(--ink3); text-transform: uppercase; margin-bottom: 8px; }
+.m-val { font-size: 24px; font-weight: 600; color: var(--ink); line-height: 1; }
+.m-unit { font-size: 13px; font-weight: 400; color: var(--ink3); margin-left: 2px; }
+.m-tag { display: inline-flex; align-items: center; gap: 3px; font-family: var(--mono); font-size: 9px; padding: 3px 7px; border-radius: 4px; margin-top: 8px; }
+
+/* Grids */
+.g2  { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.g4  { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.g73 { display: grid; grid-template-columns: 7fr 3fr; gap: 14px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
+
+/* Section label */
+.sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.sec-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); }
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; color: var(--ink3); text-transform: uppercase; padding: 0 10px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+.tbl td { padding: 9px 10px; border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: middle; color: var(--ink); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tbody tr:hover td { background: var(--bg); }
+
+/* Badges */
+.badge { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 9px; font-weight: 400; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+.badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.b-green  { background: var(--green-l); color: var(--green); }
+.b-green::before  { background: var(--green); }
+.b-amber  { background: var(--amber-l); color: var(--amber); }
+.b-amber::before  { background: var(--amber); }
+.b-red    { background: var(--red-l); color: var(--red); }
+.b-red::before    { background: var(--red); }
+.b-blue   { background: var(--blue-l); color: var(--blue); }
+.b-blue::before   { background: var(--blue); }
+.b-gray   { background: var(--gray-l); color: var(--ink2); }
+.b-gray::before   { background: var(--ink3); }
+
+/* Progress */
+.prog { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.prog:last-child { margin-bottom: 0; }
+.prog-lbl { font-size: 11px; color: var(--ink2); width: 100px; flex-shrink: 0; }
+.prog-track { flex: 1; height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 2px; }
+.prog-num { font-family: var(--mono); font-size: 10px; color: var(--ink3); width: 28px; text-align: right; }
+
+/* Alert item */
+.al { display: flex; gap: 10px; padding: 9px 11px; border-radius: var(--r); margin-bottom: 5px; cursor: pointer; }
+.al:last-child { margin-bottom: 0; }
+.al-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.al-body { font-size: 11px; color: var(--ink2); line-height: 1.5; }
+.al-time { font-family: var(--mono); font-size: 9px; color: var(--ink4); margin-top: 2px; }
+
+/* Task card */
+.task {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 11px 12px; cursor: pointer; transition: border-color 0.12s, box-shadow 0.12s;
+}
+.task:hover { border-color: var(--border2); box-shadow: var(--shadow); }
+.task.urgent  { border-left: 2px solid var(--red); }
+.task.ongoing { border-left: 2px solid var(--green); }
+.task.done    { border-left: 2px solid var(--border2); opacity: 0.65; }
+.t-zone { font-size: 11px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.t-desc { font-size: 10px; color: var(--ink3); line-height: 1.5; }
+.t-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.t-who  { font-family: var(--mono); font-size: 9px; color: var(--ink3); }
+
+/* Equip card */
+.eq { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 13px; }
+.eq-lbl { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--ink); }
+.eq-loc { font-size: 10px; color: var(--ink3); margin-top: 2px; }
+.eq-bar { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin: 10px 0 4px; }
+.eq-fill { height: 100%; border-radius: 2px; }
+.eq-meta { display: flex; justify-content: space-between; align-items: center; }
+.eq-pct { font-family: var(--mono); font-size: 10px; color: var(--ink2); }
+
+/* Bar chart */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; }
+.bc-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bc-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 4px; }
+.bc-lbl { font-family: var(--mono); font-size: 8px; color: var(--ink3); }
+
+/* Map svg */
+.map-frame { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+.map-bar { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; background: var(--white); border-bottom: 1px solid var(--border); }
+.map-title { font-size: 11px; font-weight: 500; color: var(--ink); }
+.map-leg { display: flex; gap: 10px; }
+.ml { display: flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 9px; color: var(--ink3); }
+.ml-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="tb-logo">Green<span>Ops</span></div>
+  <nav class="tb-nav">
+    <button class="tb-btn active" onclick="go('overview')">Overview</button>
+    <button class="tb-btn" onclick="go('env')">Environmental</button>
+    <button class="tb-btn" onclick="go('workforce')">Workforce</button>
+    <button class="tb-btn" onclick="go('data')">Reports</button>
+    <button class="tb-btn" onclick="go('equipment')">Equipment</button>
+    <button class="tb-btn" onclick="go('accounts')">Accounts</button>
+    <button class="tb-btn" onclick="go('mobile')">Mobile</button>
+  </nav>
+  <div class="tb-right">
+    <div class="live-badge"><div class="live-dot"></div>Live</div>
+    <div class="tb-date">Fri 04 Apr 2026 · 09:41</div>
+    <div class="tb-avatar">MA</div>
+  </div>
+</header>
+
+<div class="shell">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-section">
+    <div class="sb-label">Modules</div>
+    <button class="sb-item active" onclick="go('overview')" id="sb-overview">
+      <div class="sb-icon">◻</div>
+      <div><div class="sb-text">Overview</div><div class="sb-sub">Dashboard</div></div>
+    </button>
+    <button class="sb-item" onclick="go('env')" id="sb-env">
+      <div class="sb-icon">◈</div>
+      <div><div class="sb-text">Environmental</div><div class="sb-sub">Monitoring</div></div>
+    </button>
+    <button class="sb-item" onclick="go('workforce')" id="sb-workforce">
+      <div class="sb-icon">◎</div>
+      <div><div class="sb-text">Workforce</div><div class="sb-sub">Management</div></div>
+    </button>
+    <button class="sb-item" onclick="go('data')" id="sb-data">
+      <div class="sb-icon">◇</div>
+      <div><div class="sb-text">Data & Reports</div><div class="sb-sub">Analytics</div></div>
+    </button>
+    <button class="sb-item" onclick="go('equipment')" id="sb-equipment">
+      <div class="sb-icon">○</div>
+      <div><div class="sb-text">Equipment</div><div class="sb-sub">Smart devices</div></div>
+    </button>
+    <button class="sb-item" onclick="go('accounts')" id="sb-accounts">
+      <div class="sb-icon">△</div>
+      <div><div class="sb-text">Accounts</div><div class="sb-sub">Permissions</div></div>
+    </button>
+    <button class="sb-item" onclick="go('mobile')" id="sb-mobile">
+      <div class="sb-icon">▷</div>
+      <div><div class="sb-text">Mobile App</div><div class="sb-sub">Field view</div></div>
+    </button>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section">
+    <div class="sb-label">Active alerts</div>
+    <div class="al" style="background:var(--red-l);">
+      <div class="al-dot" style="background:var(--red);"></div>
+      <div><div class="al-body">East Comm. pollen critical</div><div class="al-time">09:38</div></div>
+    </div>
+    <div class="al" style="background:var(--amber-l);">
+      <div class="al-dot" style="background:var(--amber);"></div>
+      <div><div class="al-body">GPS offline — Zhang Min</div><div class="al-time">09:19</div></div>
+    </div>
+    <div class="al" style="background:var(--green-l);">
+      <div class="al-dot" style="background:var(--green);"></div>
+      <div><div class="al-body">Plaza task completed early</div><div class="al-time">08:55</div></div>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-user">
+    <div class="sb-user-av">MA</div>
+    <div>
+      <div class="sb-user-name">M. Aoki</div>
+      <div class="sb-user-role">District Manager</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ══════════════════════════ OVERVIEW ══════════════════════════ -->
+<div class="page-section active" id="page-overview">
+  <div class="page-head">
+    <div>
+      <div class="ph-title">Overview</div>
+      <div class="ph-sub">Today · Fri 04 Apr 2026 · Spring peak season</div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost">Export</button>
+      <button class="btn btn-green">+ New task</button>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <div class="metrics mb16">
+      <div class="metric">
+        <div class="m-label">Total waste today</div>
+        <div class="m-val">22.8<span class="m-unit">t</span></div>
+        <div class="m-tag" style="background:var(--red-l);color:var(--red);">↑ 4.2 t vs yesterday</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Pollen index</div>
+        <div class="m-val" style="color:var(--amber);">89</div>
+        <div class="m-tag" style="background:var(--amber-l);color:var(--amber);">Peak season</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Workers on duty</div>
+        <div class="m-val">34<span class="m-unit">/ 40</span></div>
+        <div class="m-tag" style="background:var(--green-l);color:var(--green);">85% attendance</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Equipment online</div>
+        <div class="m-val">47<span class="m-unit">/ 52</span></div>
+        <div class="m-tag" style="background:var(--blue-l);color:var(--blue);">90% uptime</div>
+      </div>
+    </div>
+
+    <div class="g73 mb16">
+      <!-- Map -->
+      <div class="map-frame">
+        <div class="map-bar">
+          <div class="map-title">District deployment map</div>
+          <div class="map-leg">
+            <div class="ml"><div class="ml-dot" style="background:var(--green);"></div>Active</div>
+            <div class="ml"><div class="ml-dot" style="background:var(--amber);"></div>Transit</div>
+            <div class="ml"><div class="ml-dot" style="background:var(--red);"></div>Alert</div>
+          </div>
+        </div>
+        <svg viewBox="0 0 480 220" width="100%" style="display:block;background:#f7f7f8;">
+          <!-- grid -->
+          <line x1="0" y1="73" x2="480" y2="73" stroke="#e8e8ec" stroke-width="8"/>
+          <line x1="0" y1="146" x2="480" y2="146" stroke="#e8e8ec" stroke-width="8"/>
+          <line x1="120" y1="0" x2="120" y2="220" stroke="#e8e8ec" stroke-width="8"/>
+          <line x1="240" y1="0" x2="240" y2="220" stroke="#e8e8ec" stroke-width="8"/>
+          <line x1="360" y1="0" x2="360" y2="220" stroke="#e8e8ec" stroke-width="8"/>
+          <line x1="60"  y1="0" x2="60"  y2="220" stroke="#efefef" stroke-width="3"/>
+          <line x1="180" y1="0" x2="180" y2="220" stroke="#efefef" stroke-width="3"/>
+          <line x1="300" y1="0" x2="300" y2="220" stroke="#efefef" stroke-width="3"/>
+          <line x1="420" y1="0" x2="420" y2="220" stroke="#efefef" stroke-width="3"/>
+          <line x1="0" y1="36"  x2="480" y2="36"  stroke="#efefef" stroke-width="3"/>
+          <line x1="0" y1="109" x2="480" y2="109" stroke="#efefef" stroke-width="3"/>
+          <line x1="0" y1="182" x2="480" y2="182" stroke="#efefef" stroke-width="3"/>
+          <!-- zones -->
+          <rect x="1"   y="1"   width="118" height="71" fill="rgba(26,138,74,0.04)" rx="1"/>
+          <rect x="122" y="1"   width="117" height="71" fill="rgba(192,32,32,0.04)" rx="1"/>
+          <rect x="242" y="1"   width="117" height="71" fill="rgba(26,90,184,0.04)" rx="1"/>
+          <rect x="122" y="75"  width="117" height="70" fill="rgba(26,138,74,0.05)" rx="1"/>
+          <rect x="242" y="75"  width="117" height="70" fill="rgba(192,32,32,0.04)" rx="1"/>
+          <!-- park -->
+          <rect x="126" y="78" width="110" height="66" fill="rgba(26,138,74,0.1)" rx="2"/>
+          <circle cx="150" cy="96" r="8" fill="rgba(26,138,74,0.2)"/>
+          <circle cx="170" cy="108" r="6" fill="rgba(26,138,74,0.2)"/>
+          <circle cx="194" cy="94" r="9" fill="rgba(26,138,74,0.2)"/>
+          <!-- lake -->
+          <ellipse cx="420" cy="42" rx="52" ry="32" fill="rgba(26,90,184,0.1)"/>
+          <!-- buildings -->
+          <rect x="6"  y="6"  width="46" height="30" fill="#ecedef" rx="1"/>
+          <rect x="6"  y="40" width="46" height="28" fill="#ecedef" rx="1"/>
+          <rect x="126" y="4" width="110" height="66" fill="#ecedef" rx="1"/>
+          <rect x="244" y="4" width="110" height="66" fill="#ecedef" rx="1"/>
+          <rect x="362" y="78" width="110" height="66" fill="#ecedef" rx="1"/>
+          <rect x="6"  y="150" width="110" height="65" fill="#ecedef" rx="1"/>
+          <rect x="244" y="150" width="110" height="65" fill="#ecedef" rx="1"/>
+          <rect x="362" y="150" width="110" height="65" fill="#ecedef" rx="1"/>
+          <!-- labels -->
+          <text x="8"   y="18" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">North CBD</text>
+          <text x="128" y="18" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">East Comm.</text>
+          <text x="246" y="18" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">West Res.</text>
+          <text x="364" y="18" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">North Lake</text>
+          <text x="8"   y="90" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">Park Zone</text>
+          <text x="140" y="116" fill="rgba(26,138,74,0.5)" font-size="8" font-family="monospace">Park</text>
+          <text x="246" y="90" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">South Comm.</text>
+          <text x="364" y="90" fill="rgba(80,80,100,0.35)" font-size="8" font-family="monospace">East Res.</text>
+          <!-- alert rings -->
+          <circle cx="180" cy="36" r="14" fill="none" stroke="rgba(192,32,32,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="300" cy="109" r="11" fill="none" stroke="rgba(192,32,32,0.25)" stroke-width="1" stroke-dasharray="3 2"/>
+          <!-- workers -->
+          <circle cx="42"  cy="45" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="178" cy="36" r="5" fill="#c02020" stroke="white" stroke-width="1.5"/>
+          <circle cx="56"  cy="110" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="162" cy="110" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="268" cy="38"  r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="300" cy="112" r="5" fill="#b86a00" stroke="white" stroke-width="1.5"/>
+          <circle cx="388" cy="42"  r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="80"  cy="180" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="270" cy="178" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+          <circle cx="438" cy="110" r="5" fill="#1a8a4a" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <!-- Right -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:10px;">Waste breakdown</div>
+          <div class="prog"><div class="prog-lbl">Pollen / fluff</div><div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--amber);"></div></div><div class="prog-num">8.6t</div></div>
+          <div class="prog"><div class="prog-lbl">Petals</div><div class="prog-track"><div class="prog-fill" style="width:43%;background:var(--red);"></div></div><div class="prog-num">5.2t</div></div>
+          <div class="prog"><div class="prog-lbl">Grass clippings</div><div class="prog-track"><div class="prog-fill" style="width:32%;background:var(--blue);"></div></div><div class="prog-num">3.8t</div></div>
+          <div class="prog"><div class="prog-lbl">Fallen leaves</div><div class="prog-track"><div class="prog-fill" style="width:29%;background:var(--green);"></div></div><div class="prog-num">3.5t</div></div>
+          <div class="prog"><div class="prog-lbl">Dead branches</div><div class="prog-track"><div class="prog-fill" style="width:14%;background:var(--ink3);"></div></div><div class="prog-num">1.7t</div></div>
+        </div>
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:6px;">48h forecast</div>
+          <div style="font-size:11px;color:var(--ink2);line-height:1.65;">Peak pollen season. Volume may exceed <strong style="color:var(--ink);">25 t/day</strong>. Increase sweep frequency in East Comm.</div>
+          <div class="m-tag" style="background:var(--red-l);color:var(--red);margin-top:10px;">High alert active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="sec-head"><div class="sec-label">Recent tasks</div><button class="btn btn-ghost" onclick="go('workforce')" style="font-size:11px;padding:4px 10px;">View all →</button></div>
+        <table class="tbl">
+          <thead><tr><th>Zone</th><th>Worker</th><th>Type</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;font-size:12px;">East Comm. Blk 3</td><td style="font-size:11px;color:var(--ink2);">Chen Fang</td><td style="font-size:11px;color:var(--ink2);">Pollen sweep</td><td><span class="badge b-red">Urgent</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">Park Zone Path</td><td style="font-size:11px;color:var(--ink2);">Wang Jing</td><td style="font-size:11px;color:var(--ink2);">Leaf collection</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">Central Plaza</td><td style="font-size:11px;color:var(--ink2);">Li Wei</td><td style="font-size:11px;color:var(--ink2);">Post-event</td><td><span class="badge b-gray">Done</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">Riverside Walk</td><td style="font-size:11px;color:var(--ink2);">Wu Hao</td><td style="font-size:11px;color:var(--ink2);">Branch clear</td><td><span class="badge b-red">Urgent</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="sec-head"><div class="sec-label">Equipment alerts</div><button class="btn btn-ghost" onclick="go('equipment')" style="font-size:11px;padding:4px 10px;">View all →</button></div>
+        <table class="tbl">
+          <thead><tr><th>Device</th><th>Location</th><th>Fill</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:var(--mono);font-size:10px;">BIN-042</td><td style="font-size:11px;color:var(--ink2);">East Comm.</td><td style="font-family:var(--mono);font-size:11px;">94%</td><td><span class="badge b-red">Full</span></td></tr>
+            <tr><td style="font-family:var(--mono);font-size:10px;">BIN-017</td><td style="font-size:11px;color:var(--ink2);">Park Zone</td><td style="font-family:var(--mono);font-size:11px;">68%</td><td><span class="badge b-amber">Monitor</span></td></tr>
+            <tr><td style="font-family:var(--mono);font-size:10px;">BIN-031</td><td style="font-size:11px;color:var(--ink2);">CBD North</td><td style="font-family:var(--mono);font-size:11px;">22%</td><td><span class="badge b-green">OK</span></td></tr>
+            <tr><td style="font-family:var(--mono);font-size:10px;">SEN-008</td><td style="font-size:11px;color:var(--ink2);">West Res.</td><td style="font-family:var(--mono);font-size:11px;">—</td><td><span class="badge b-gray">Offline</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ENVIRONMENTAL ══════════════════════════ -->
+<div class="page-section" id="page-env">
+  <div class="page-head">
+    <div><div class="ph-title">Environmental Monitoring</div><div class="ph-sub">Live sensor data · Spring peak season</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">History</button><button class="btn btn-solid">Set alert threshold</button></div>
+  </div>
+  <div class="page-body">
+    <div class="metrics mb16">
+      <div class="metric"><div class="m-label">Temperature</div><div class="m-val" style="color:var(--red);">21<span class="m-unit">°C</span></div></div>
+      <div class="metric"><div class="m-label">Humidity</div><div class="m-val">78<span class="m-unit">%</span></div></div>
+      <div class="metric"><div class="m-label">Wind speed</div><div class="m-val">7.2<span class="m-unit">m/s</span></div></div>
+      <div class="metric"><div class="m-label">Pollen index</div><div class="m-val" style="color:var(--amber);">89</div><div class="m-tag" style="background:var(--red-l);color:var(--red);">Critical</div></div>
+    </div>
+    <div class="g73 mb16">
+      <div class="card">
+        <div class="sec-head mb12"><div class="sec-label">Monthly waste volume — 2026</div></div>
+        <div class="bar-chart" style="height:110px;align-items:flex-end;gap:6px;">
+          <div class="bc-item"><div class="bc-bar" style="height:36%;background:var(--bg3);"></div><div class="bc-lbl">Jan</div></div>
+          <div class="bc-item"><div class="bc-bar" style="height:31%;background:var(--bg3);"></div><div class="bc-lbl">Feb</div></div>
+          <div class="bc-item"><div class="bc-bar" style="height:61%;background:#d4e8f0;"></div><div class="bc-lbl">Mar</div></div>
+          <div class="bc-item"><div class="bc-bar" style="height:95%;background:var(--amber);"></div><div class="bc-lbl" style="color:var(--amber);">Apr●</div></div>
+          <div class="bc-item"><div class="bc-bar" style="height:76%;background:var(--bg3);opacity:0.5;border:1px dashed var(--border2);box-sizing:border-box;"></div><div class="bc-lbl">May</div></div>
+          <div class="bc-item"><div class="bc-bar" style="height:48%;background:var(--bg3);opacity:0.4;border:1px dashed var(--border2);box-sizing:border-box;"></div><div class="bc-lbl">Jun</div></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--ink4);text-align:center;margin-top:6px;">tons / day · dashed = forecast</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:6px;">48h forecast</div>
+          <div style="font-size:11px;color:var(--ink2);line-height:1.65;margin-top:4px;">Peak pollen season. Poplar &amp; willow fluff burst. Volume may exceed <strong style="color:var(--ink);">25 t/day</strong>.</div>
+        </div>
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:8px;">Active alerts</div>
+          <div class="al" style="background:var(--red-l);">
+            <div class="al-dot" style="background:var(--red);"></div>
+            <div><div class="al-body">East Comm. — pollen critical, sweep overdue</div><div class="al-time">09:38</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-head mb12"><div class="sec-label">Sensor readings by district</div></div>
+      <table class="tbl">
+        <thead><tr><th>District</th><th>Pollen</th><th>Temp</th><th>Humidity</th><th>Wind</th><th>Waste est.</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">East Comm.</td><td style="color:var(--red);font-family:var(--mono);">97</td><td style="font-family:var(--mono);font-size:11px;">21°C</td><td style="font-family:var(--mono);font-size:11px;">80%</td><td style="font-family:var(--mono);font-size:11px;">7.4 m/s</td><td style="font-family:var(--mono);font-size:11px;">6.2 t</td><td><span class="badge b-red">Critical</span></td></tr>
+          <tr><td style="font-weight:500;">Park Zone</td><td style="color:var(--amber);font-family:var(--mono);">84</td><td style="font-family:var(--mono);font-size:11px;">20°C</td><td style="font-family:var(--mono);font-size:11px;">76%</td><td style="font-family:var(--mono);font-size:11px;">6.8 m/s</td><td style="font-family:var(--mono);font-size:11px;">5.1 t</td><td><span class="badge b-amber">High</span></td></tr>
+          <tr><td style="font-weight:500;">Central CBD</td><td style="font-family:var(--mono);">72</td><td style="font-family:var(--mono);font-size:11px;">22°C</td><td style="font-family:var(--mono);font-size:11px;">74%</td><td style="font-family:var(--mono);font-size:11px;">7.0 m/s</td><td style="font-family:var(--mono);font-size:11px;">4.4 t</td><td><span class="badge b-amber">High</span></td></tr>
+          <tr><td style="font-weight:500;">West Res.</td><td style="font-family:var(--mono);">65</td><td style="font-family:var(--mono);font-size:11px;">21°C</td><td style="font-family:var(--mono);font-size:11px;">78%</td><td style="font-family:var(--mono);font-size:11px;">6.5 m/s</td><td style="font-family:var(--mono);font-size:11px;">3.8 t</td><td><span class="badge b-green">Normal</span></td></tr>
+          <tr><td style="font-weight:500;">Riverside</td><td style="font-family:var(--mono);">58</td><td style="font-family:var(--mono);font-size:11px;">19°C</td><td style="font-family:var(--mono);font-size:11px;">82%</td><td style="font-family:var(--mono);font-size:11px;">5.9 m/s</td><td style="font-family:var(--mono);font-size:11px;">3.3 t</td><td><span class="badge b-green">Normal</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ WORKFORCE ══════════════════════════ -->
+<div class="page-section" id="page-workforce">
+  <div class="page-head">
+    <div><div class="ph-title">Workforce Management</div><div class="ph-sub">34 on duty · 18 active tasks · 12 completed today</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">Export</button><button class="btn btn-green">+ Assign task</button></div>
+  </div>
+  <div class="page-body">
+    <div class="metrics mb16">
+      <div class="metric"><div class="m-label">Coverage rate</div><div class="m-val">87<span class="m-unit">%</span></div><div class="m-tag" style="background:var(--green-l);color:var(--green);">↑ 3%</div></div>
+      <div class="metric"><div class="m-label">Avg response time</div><div class="m-val">14<span class="m-unit">min</span></div><div class="m-tag" style="background:var(--amber-l);color:var(--amber);">↓ 2 min slower</div></div>
+      <div class="metric"><div class="m-label">Active tasks</div><div class="m-val">18</div></div>
+      <div class="metric"><div class="m-label">Absent today</div><div class="m-val" style="color:var(--red);">1</div><div class="m-tag" style="background:var(--red-l);color:var(--red);">Unexcused</div></div>
+    </div>
+    <div class="g73 mb16">
+      <div>
+        <div class="sec-head mb12"><div class="sec-label">Task assignments</div><button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">+ New</button></div>
+        <div class="g3">
+          <div class="task urgent"><div class="t-zone">East Comm. · Blk 3</div><div class="t-desc">Pollen accumulation critical — immediate sweep required</div><div class="t-foot"><span class="t-who">Chen Fang</span><span class="badge b-red">Urgent</span></div></div>
+          <div class="task ongoing"><div class="t-zone">Park Zone · Path</div><div class="t-desc">Scheduled leaf collection round 2</div><div class="t-foot"><span class="t-who">Wang Jing</span><span class="badge b-green">Active</span></div></div>
+          <div class="task ongoing"><div class="t-zone">Central · Plaza</div><div class="t-desc">Post-event cleanup, 3 workers assigned</div><div class="t-foot"><span class="t-who">Li Wei</span><span class="badge b-green">Active</span></div></div>
+          <div class="task ongoing"><div class="t-zone">South Comm. · St.5</div><div class="t-desc">Grass clipping route sweep</div><div class="t-foot"><span class="t-who">Zhao Lei</span><span class="badge b-green">Active</span></div></div>
+          <div class="task done"><div class="t-zone">North CBD · Entry</div><div class="t-desc">Morning sweep completed ✓</div><div class="t-foot"><span class="t-who">Liu Yang</span><span class="badge b-gray">Done</span></div></div>
+          <div class="task urgent"><div class="t-zone">Riverside · Walk</div><div class="t-desc">Branch clearance after wind event</div><div class="t-foot"><span class="t-who">Wu Hao</span><span class="badge b-red">Urgent</span></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:10px;">Attendance today</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="background:var(--bg);border-radius:var(--r);padding:8px 10px;"><div style="font-size:20px;font-weight:600;">34</div><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);">On duty</div></div>
+            <div style="background:var(--bg);border-radius:var(--r);padding:8px 10px;"><div style="font-size:20px;font-weight:600;">4</div><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);">Off / leave</div></div>
+            <div style="background:var(--bg);border-radius:var(--r);padding:8px 10px;"><div style="font-size:20px;font-weight:600;">2</div><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);">Unconfirmed</div></div>
+            <div style="background:var(--red-l);border-radius:var(--r);padding:8px 10px;"><div style="font-size:20px;font-weight:600;color:var(--red);">1</div><div style="font-family:var(--mono);font-size:9px;color:var(--red);">Absent</div></div>
+          </div>
+        </div>
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:10px;">Top performers</div>
+          <div class="prog"><div class="prog-lbl">Li Wei</div><div class="prog-track"><div class="prog-fill" style="width:94%;background:var(--green);"></div></div><div class="prog-num">94</div></div>
+          <div class="prog"><div class="prog-lbl">Zhao Lei</div><div class="prog-track"><div class="prog-fill" style="width:91%;background:var(--green);"></div></div><div class="prog-num">91</div></div>
+          <div class="prog"><div class="prog-lbl">Wang Jing</div><div class="prog-track"><div class="prog-fill" style="width:88%;background:var(--blue);"></div></div><div class="prog-num">88</div></div>
+          <div class="prog"><div class="prog-lbl">Wu Hao</div><div class="prog-track"><div class="prog-fill" style="width:85%;background:var(--blue);"></div></div><div class="prog-num">85</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-head mb12"><div class="sec-label">Field workers — full roster</div></div>
+      <table class="tbl">
+        <thead><tr><th>Name</th><th>Role</th><th>Zone</th><th>Task</th><th>Check-in</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">Li Wei</td><td style="font-size:11px;color:var(--ink2);">Team Lead A</td><td style="font-size:11px;">Central</td><td style="font-size:11px;">Plaza cleanup</td><td style="font-family:var(--mono);font-size:10px;">08:02</td><td><span class="badge b-green">Active</span></td></tr>
+          <tr><td style="font-weight:500;">Chen Fang</td><td style="font-size:11px;color:var(--ink2);">Field Worker</td><td style="font-size:11px;">East Comm.</td><td style="font-size:11px;">Pollen sweep</td><td style="font-family:var(--mono);font-size:10px;">07:58</td><td><span class="badge b-red">Urgent task</span></td></tr>
+          <tr><td style="font-weight:500;">Wang Jing</td><td style="font-size:11px;color:var(--ink2);">Field Worker</td><td style="font-size:11px;">Park Zone</td><td style="font-size:11px;">Leaf collection</td><td style="font-family:var(--mono);font-size:10px;">08:10</td><td><span class="badge b-green">Active</span></td></tr>
+          <tr><td style="font-weight:500;">Zhang Min</td><td style="font-size:11px;color:var(--ink2);">Field Worker</td><td style="font-size:11px;">—</td><td style="font-size:11px;">In transit</td><td style="font-family:var(--mono);font-size:10px;">08:35</td><td><span class="badge b-amber">Transit</span></td></tr>
+          <tr><td style="font-weight:500;">Zhao Lei</td><td style="font-size:11px;color:var(--ink2);">Team Lead B</td><td style="font-size:11px;">South Comm.</td><td style="font-size:11px;">Grass sweep</td><td style="font-family:var(--mono);font-size:10px;">08:00</td><td><span class="badge b-green">Active</span></td></tr>
+          <tr><td style="font-weight:500;">Sun Mei</td><td style="font-size:11px;color:var(--ink2);">Field Worker</td><td style="font-size:11px;">—</td><td style="font-size:11px;">Standby</td><td style="font-family:var(--mono);font-size:10px;">08:20</td><td><span class="badge b-gray">Idle</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ DATA & REPORTS ══════════════════════════ -->
+<div class="page-section" id="page-data">
+  <div class="page-head">
+    <div><div class="ph-title">Data & Reports</div><div class="ph-sub">Analytics · Performance · Export</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">Schedule</button><button class="btn btn-solid">Export CSV</button></div>
+  </div>
+  <div class="page-body">
+    <div class="metrics mb16">
+      <div class="metric"><div class="m-label">Total collected YTD</div><div class="m-val">142<span class="m-unit">t</span></div></div>
+      <div class="metric"><div class="m-label">Avg daily (April)</div><div class="m-val">18.6<span class="m-unit">t</span></div></div>
+      <div class="metric"><div class="m-label">Tasks completed</div><div class="m-val">284</div><div class="m-tag" style="background:var(--green-l);color:var(--green);">↑ 12% vs March</div></div>
+      <div class="metric"><div class="m-label">Efficiency score</div><div class="m-val">87<span class="m-unit">%</span></div></div>
+    </div>
+    <div class="g2 mb16">
+      <div class="card">
+        <div class="sec-label mb12">Waste by category — April</div>
+        <div class="prog"><div class="prog-lbl" style="width:110px;">Pollen / fluff</div><div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--amber);"></div></div><div class="prog-num">38%</div></div>
+        <div class="prog"><div class="prog-lbl" style="width:110px;">Petals</div><div class="prog-track"><div class="prog-fill" style="width:43%;background:var(--red);"></div></div><div class="prog-num">23%</div></div>
+        <div class="prog"><div class="prog-lbl" style="width:110px;">Grass clippings</div><div class="prog-track"><div class="prog-fill" style="width:32%;background:var(--blue);"></div></div><div class="prog-num">17%</div></div>
+        <div class="prog"><div class="prog-lbl" style="width:110px;">Fallen leaves</div><div class="prog-track"><div class="prog-fill" style="width:27%;background:var(--green);"></div></div><div class="prog-num">14%</div></div>
+        <div class="prog"><div class="prog-lbl" style="width:110px;">Dead branches</div><div class="prog-track"><div class="prog-fill" style="width:15%;background:var(--ink3);"></div></div><div class="prog-num">8%</div></div>
+      </div>
+      <div class="card">
+        <div class="sec-label mb12">District performance</div>
+        <table class="tbl">
+          <thead><tr><th>District</th><th>Tasks</th><th>Avg time</th><th>Score</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;font-size:12px;">Central CBD</td><td style="font-family:var(--mono);font-size:11px;">62</td><td style="font-family:var(--mono);font-size:11px;">11 min</td><td><span class="badge b-green">94</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">Park Zone</td><td style="font-family:var(--mono);font-size:11px;">48</td><td style="font-family:var(--mono);font-size:11px;">13 min</td><td><span class="badge b-green">91</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">West Res.</td><td style="font-family:var(--mono);font-size:11px;">55</td><td style="font-family:var(--mono);font-size:11px;">14 min</td><td><span class="badge b-green">88</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">East Comm.</td><td style="font-family:var(--mono);font-size:11px;">71</td><td style="font-family:var(--mono);font-size:11px;">16 min</td><td><span class="badge b-amber">82</span></td></tr>
+            <tr><td style="font-weight:500;font-size:12px;">Riverside</td><td style="font-family:var(--mono);font-size:11px;">48</td><td style="font-family:var(--mono);font-size:11px;">18 min</td><td><span class="badge b-amber">79</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-head mb12"><div class="sec-label">Saved reports</div><button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Generate new</button></div>
+      <table class="tbl">
+        <thead><tr><th>Report name</th><th>Period</th><th>Generated</th><th>Format</th><th></th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;font-size:12px;">Monthly waste summary — March</td><td style="font-size:11px;color:var(--ink2);">Mar 2026</td><td style="font-family:var(--mono);font-size:10px;">01 Apr</td><td><span class="badge b-gray">PDF</span></td><td><button class="btn btn-ghost" style="font-size:10px;padding:4px 10px;">Download</button></td></tr>
+          <tr><td style="font-weight:500;font-size:12px;">Workforce performance Q1</td><td style="font-size:11px;color:var(--ink2);">Jan–Mar 2026</td><td style="font-family:var(--mono);font-size:10px;">31 Mar</td><td><span class="badge b-gray">XLSX</span></td><td><button class="btn btn-ghost" style="font-size:10px;padding:4px 10px;">Download</button></td></tr>
+          <tr><td style="font-weight:500;font-size:12px;">Equipment audit Q1</td><td style="font-size:11px;color:var(--ink2);">Jan–Mar 2026</td><td style="font-family:var(--mono);font-size:10px;">30 Mar</td><td><span class="badge b-gray">PDF</span></td><td><button class="btn btn-ghost" style="font-size:10px;padding:4px 10px;">Download</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ EQUIPMENT ══════════════════════════ -->
+<div class="page-section" id="page-equipment">
+  <div class="page-head">
+    <div><div class="ph-title">Equipment Management</div><div class="ph-sub">52 devices registered · 47 online · 5 offline</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">Maintenance log</button><button class="btn btn-solid">+ Add device</button></div>
+  </div>
+  <div class="page-body">
+    <div class="metrics mb16">
+      <div class="metric"><div class="m-label">Online devices</div><div class="m-val">47</div><div class="m-tag" style="background:var(--green-l);color:var(--green);">90% uptime</div></div>
+      <div class="metric"><div class="m-label">Bins full (&gt;80%)</div><div class="m-val" style="color:var(--red);">8</div><div class="m-tag" style="background:var(--red-l);color:var(--red);">Collect now</div></div>
+      <div class="metric"><div class="m-label">Avg fill level</div><div class="m-val">54<span class="m-unit">%</span></div></div>
+      <div class="metric"><div class="m-label">Maintenance due</div><div class="m-val">3</div><div class="m-tag" style="background:var(--amber-l);color:var(--amber);">This week</div></div>
+    </div>
+    <div class="sec-head mb12"><div class="sec-label">Smart bins — status overview</div></div>
+    <div class="g4 mb16">
+      <div class="eq"><div class="eq-lbl">BIN-042</div><div class="eq-loc">East Comm. · Blk 3</div><div class="eq-bar"><div class="eq-fill" style="width:94%;background:var(--red);"></div></div><div class="eq-meta"><div class="eq-pct" style="color:var(--red);">94%</div><span class="badge b-red">Full</span></div></div>
+      <div class="eq"><div class="eq-lbl">BIN-017</div><div class="eq-loc">Park Zone · Main</div><div class="eq-bar"><div class="eq-fill" style="width:68%;background:var(--amber);"></div></div><div class="eq-meta"><div class="eq-pct">68%</div><span class="badge b-amber">Monitor</span></div></div>
+      <div class="eq"><div class="eq-lbl">BIN-031</div><div class="eq-loc">CBD North · Entry</div><div class="eq-bar"><div class="eq-fill" style="width:22%;background:var(--green);"></div></div><div class="eq-meta"><div class="eq-pct">22%</div><span class="badge b-green">OK</span></div></div>
+      <div class="eq" style="border-color:var(--border2);opacity:0.7;"><div class="eq-lbl">SEN-008</div><div class="eq-loc">West Res. · Zone 2</div><div class="eq-bar"><div class="eq-fill" style="width:0%;"></div></div><div class="eq-meta"><div class="eq-pct" style="color:var(--ink3);">Offline</div><span class="badge b-gray">Check</span></div></div>
+      <div class="eq"><div class="eq-lbl">BIN-055</div><div class="eq-loc">Riverside · Walk</div><div class="eq-bar"><div class="eq-fill" style="width:81%;background:var(--red);"></div></div><div class="eq-meta"><div class="eq-pct" style="color:var(--red);">81%</div><span class="badge b-red">Collect soon</span></div></div>
+      <div class="eq"><div class="eq-lbl">BIN-023</div><div class="eq-loc">South Comm. · St.5</div><div class="eq-bar"><div class="eq-fill" style="width:45%;background:var(--blue);"></div></div><div class="eq-meta"><div class="eq-pct">45%</div><span class="badge b-green">OK</span></div></div>
+      <div class="eq"><div class="eq-lbl">SEN-012</div><div class="eq-loc">East Comm. · Sq.</div><div class="eq-bar"><div class="eq-fill" style="width:100%;background:var(--green);"></div></div><div class="eq-meta"><div class="eq-pct">Online</div><span class="badge b-green">Normal</span></div></div>
+      <div class="eq"><div class="eq-lbl">BIN-039</div><div class="eq-loc">Central · Plaza</div><div class="eq-bar"><div class="eq-fill" style="width:60%;background:var(--amber);"></div></div><div class="eq-meta"><div class="eq-pct">60%</div><span class="badge b-amber">Monitor</span></div></div>
+    </div>
+    <div class="card">
+      <div class="sec-head mb12"><div class="sec-label">Upcoming maintenance</div></div>
+      <table class="tbl">
+        <thead><tr><th>Device</th><th>Location</th><th>Type</th><th>Due date</th><th>Assigned to</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:var(--mono);font-size:10px;">BIN-042</td><td style="font-size:12px;">East Comm. Blk 3</td><td style="font-size:11px;color:var(--ink2);">Sensor calibration</td><td style="font-family:var(--mono);font-size:10px;">05 Apr</td><td style="font-size:11px;">Tech team A</td></tr>
+          <tr><td style="font-family:var(--mono);font-size:10px;">SEN-008</td><td style="font-size:12px;">West Res. Zone 2</td><td style="font-size:11px;color:var(--ink2);">Connectivity repair</td><td style="font-family:var(--mono);font-size:10px;">06 Apr</td><td style="font-size:11px;">Tech team B</td></tr>
+          <tr><td style="font-family:var(--mono);font-size:10px;">BIN-055</td><td style="font-size:12px;">Riverside Walk</td><td style="font-size:11px;color:var(--ink2);">Mechanism check</td><td style="font-family:var(--mono);font-size:10px;">08 Apr</td><td style="font-size:11px;">Tech team A</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ACCOUNTS ══════════════════════════ -->
+<div class="page-section" id="page-accounts">
+  <div class="page-head">
+    <div><div class="ph-title">Accounts & Permissions</div><div class="ph-sub">40 users · 4 roles · audit logging enabled</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">Audit log</button><button class="btn btn-solid">+ Invite user</button></div>
+  </div>
+  <div class="page-body">
+    <div class="g2 mb16">
+      <div class="card">
+        <div class="sec-head mb12"><div class="sec-label">User roster</div></div>
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Role</th><th>Last active</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;">Admin Chen</td><td><span class="badge b-red" style="font-size:9px;">Sys Admin</span></td><td style="font-family:var(--mono);font-size:10px;">Today 09:30</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;">M. Aoki</td><td><span class="badge b-amber" style="font-size:9px;">Dist. Manager</span></td><td style="font-family:var(--mono);font-size:10px;">Today 09:41</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;">Li Wei</td><td><span class="badge b-blue" style="font-size:9px;">Supervisor</span></td><td style="font-family:var(--mono);font-size:10px;">Today 08:02</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;">Zhao Lei</td><td><span class="badge b-blue" style="font-size:9px;">Supervisor</span></td><td style="font-family:var(--mono);font-size:10px;">Today 08:00</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;">Chen Fang</td><td><span class="badge b-gray" style="font-size:9px;">Field Worker</span></td><td style="font-family:var(--mono);font-size:10px;">Today 07:58</td><td><span class="badge b-green">Active</span></td></tr>
+            <tr><td style="font-weight:500;">Sun Mei</td><td><span class="badge b-gray" style="font-size:9px;">Field Worker</span></td><td style="font-family:var(--mono);font-size:10px;">Today 08:20</td><td><span class="badge b-gray">Idle</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card">
+          <div class="sec-label mb12">Role permissions matrix</div>
+          <table class="tbl">
+            <thead><tr><th>Role</th><th>Users</th><th>Access scope</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:500;">System admin</td><td style="font-family:var(--mono);font-size:11px;">2</td><td style="font-size:11px;color:var(--ink2);">Full platform</td></tr>
+              <tr><td style="font-weight:500;">Dist. manager</td><td style="font-family:var(--mono);font-size:11px;">4</td><td style="font-size:11px;color:var(--ink2);">All except admin panel</td></tr>
+              <tr><td style="font-weight:500;">Field supervisor</td><td style="font-family:var(--mono);font-size:11px;">6</td><td style="font-size:11px;color:var(--ink2);">Workforce + Equipment</td></tr>
+              <tr><td style="font-weight:500;">Field worker</td><td style="font-family:var(--mono);font-size:11px;">28</td><td style="font-size:11px;color:var(--ink2);">Mobile app only</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card card-sm">
+          <div class="sec-label" style="margin-bottom:10px;">Recent audit log</div>
+          <div class="al" style="background:var(--bg);">
+            <div class="al-dot" style="background:var(--ink3);"></div>
+            <div><div class="al-body">Admin Chen modified permissions for Zhao Lei</div><div class="al-time">09:15 today</div></div>
+          </div>
+          <div class="al" style="background:var(--bg);">
+            <div class="al-dot" style="background:var(--ink3);"></div>
+            <div><div class="al-body">New user invited: Wu Hao (Field Worker)</div><div class="al-time">Yesterday 16:42</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ MOBILE ══════════════════════════ -->
+<div class="page-section" id="page-mobile">
+  <div class="page-head">
+    <div><div class="ph-title">Mobile App — Field View</div><div class="ph-sub">Simulated worker perspective · Chen Fang</div></div>
+    <div class="ph-actions"><button class="btn btn-ghost">Preview other worker</button></div>
+  </div>
+  <div class="page-body" style="display:flex;justify-content:center;align-items:flex-start;padding-top:24px;">
+    <div style="width:300px;">
+      <div style="background:#1c1c1e;border-radius:40px;padding:10px;box-shadow:0 24px 64px rgba(0,0,0,0.18),0 4px 12px rgba(0,0,0,0.1);">
+        <div style="background:var(--bg);border-radius:32px;overflow:hidden;">
+          <!-- status bar -->
+          <div style="background:var(--white);padding:10px 20px 0;display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink2);">09:41</div>
+            <div style="width:56px;height:5px;background:var(--ink);border-radius:3px;opacity:0.15;"></div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink2);">100%</div>
+          </div>
+          <!-- app header -->
+          <div style="background:var(--white);padding:12px 18px 10px;border-bottom:1px solid var(--border);">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;">GreenOps Field</div>
+            <div style="font-size:16px;font-weight:600;color:var(--ink);margin-top:4px;">Chen Fang</div>
+            <div style="display:flex;gap:8px;margin-top:6px;align-items:center;">
+              <span class="badge b-green" style="font-size:9px;">On duty</span>
+              <span style="font-family:var(--mono);font-size:9px;color:var(--ink3);">East Comm. · Blk 3</span>
+            </div>
+          </div>
+          <!-- urgent task -->
+          <div style="background:var(--red-l);padding:12px 16px;border-bottom:1px solid rgba(192,32,32,0.1);">
+            <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--red);text-transform:uppercase;margin-bottom:5px;">Current task — urgent</div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);">Pollen sweep · Blk 3</div>
+            <div style="font-size:11px;color:var(--ink2);margin-top:3px;line-height:1.55;">Accumulation critical. Complete sweep and report fill level of BIN-042.</div>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <button style="flex:1;padding:8px;border-radius:var(--r);border:none;background:var(--red);color:#fff;font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;">Mark complete</button>
+              <button style="padding:8px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--white);font-family:var(--sans);font-size:11px;cursor:pointer;color:var(--ink2);">Details</button>
+            </div>
+          </div>
+          <!-- GPS -->
+          <div style="padding:11px 16px;background:var(--white);border-bottom:1px solid var(--border);">
+            <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;margin-bottom:6px;">GPS check-in</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-size:11px;color:var(--ink2);">Last ping: 09:39 · East Comm.</div>
+              <button style="padding:5px 12px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:10px;cursor:pointer;">Check in</button>
+            </div>
+          </div>
+          <!-- next tasks -->
+          <div style="padding:11px 16px;background:var(--bg);">
+            <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;margin-bottom:8px;">Next tasks</div>
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px;margin-bottom:7px;">
+              <div style="font-size:12px;font-weight:500;color:var(--ink);">BIN-042 waste report</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:2px;">Fill level + condition log</div>
+            </div>
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px;">
+              <div style="font-size:12px;font-weight:500;color:var(--ink);">Route to South Comm.</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:2px;">Estimated 14:00</div>
+            </div>
+          </div>
+          <!-- bottom tabs -->
+          <div style="display:flex;background:var(--white);border-top:1px solid var(--border);">
+            <div style="flex:1;padding:10px 0;text-align:center;font-family:var(--mono);font-size:9px;color:var(--green);border-top:2px solid var(--green);">Tasks</div>
+            <div style="flex:1;padding:10px 0;text-align:center;font-family:var(--mono);font-size:9px;color:var(--ink3);">Map</div>
+            <div style="flex:1;padding:10px 0;text-align:center;font-family:var(--mono);font-size:9px;color:var(--ink3);">Report</div>
+            <div style="flex:1;padding:10px 0;text-align:center;font-family:var(--mono);font-size:9px;color:var(--ink3);">Profile</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-family:var(--mono);font-size:9px;color:var(--ink4);">Mobile app · field worker view · simulated</div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+const pages = ['overview','env','workforce','data','equipment','accounts','mobile'];
+const navLabels = ['Overview','Environmental','Workforce','Reports','Equipment','Accounts','Mobile'];
+
+function go(id) {
+  pages.forEach((p, i) => {
+    const pg = document.getElementById('page-' + p);
+    const sb = document.getElementById('sb-' + p);
+    const tb = document.querySelectorAll('.tb-btn')[i];
+    const isActive = p === id;
+    if (pg) pg.classList.toggle('active', isActive);
+    if (sb) sb.classList.toggle('active', isActive);
+    if (tb) tb.classList.toggle('active', isActive);
+  });
+}
+</script>
+</body>
+</html>

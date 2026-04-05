@@ -56,15 +56,26 @@
                     </div>
 
                     <div class="work-description">
-                        <p>This project addresses the increasing risk of extreme urban heat driven by climate change, where prolonged high temperatures are expected to impact over 100 million people across the United States within the next few decades.
-
-The goal of the system is to shift urban heat management from passive mitigation to active, responsive environmental control. To achieve this, the project proposes a distributed “solar umbrella” system that regulates solar radiation at the urban scale. Inspired by coral reef protection strategies, the system uses grating-based surfaces and thermal insulation materials to selectively control the angle and wavelength of incoming light, reducing heat accumulation in targeted areas. Beyond physical intervention, the system integrates sensing and monitoring technologies—including environmental data collection, signal transmission, and spatial scanning—to identify heat-intensive zones and dynamically adjust cooling responses.
-
-By combining material-based climate control with real-time environmental feedback, the system creates an adaptive urban cooling network that improves thermal comfort and reduces heat-related risks in high-density city environments.
+                        <p>This project addresses the growing risk of extreme urban heat driven by climate change. It proposes a distributed “solar umbrella” system that shifts heat management from passive mitigation to active, responsive control.
+Using grating structures and thermal materials, the system regulates solar radiation while integrating sensing and spatial monitoring to identify and respond to heat-intensive zones. By combining material-based cooling with real-time data feedback, it creates an adaptive urban system that improves thermal comfort and reduces heat-related risks.
                         </p>
                     </div>
 
                 </div> 
+
+            
+                <div class="work-title">   
+                    <h2>what i try to do</h2>
+                </div>
+
+                <div class="projectcontent">
+
+                    <div class="work-description">
+                        <p>Aim to create a system designed to help regulate temperatures within urban areas. By drawing upon principles inspired by NASA's deep-space communication technologies—such as radar sonification—I intend to construct a responsive system capable of real-time monitoring of urban cooling infrastructure and the effectiveness of its operations.</p>
+                    </div>
+                    
+                </div>
+                
 
                 <div class="work-title">
                     <h2>Assumption use flow</h2>
@@ -77,9 +88,8 @@ By combining material-based climate control with real-time environmental feedbac
                     </div>
 
                     <div class="work-description">
-                        <p>The system operates through a centralized control platform that integrates environmental sensing, device deployment, and real-time monitoring, thereby providing a rapid-response urban cooling service. There are two mechanisms for triggering cooling demand: the system can be automatically activated based on preset environmental thresholds, or it can be manually initiated by operators at the central control platform. By analyzing spatial and environmental data, the system identifies areas in need of cooling and then launches “sunshade” devices to the designated locations. Once deployed, the cooling panels automatically unfold to absorb and reflect solar energy, thereby reducing the thermal energy that reaches the city. At the same time, each device performs localized spatial scanning, collecting real-time data on environmental conditions and surface heat distribution in the cooled area.
-
-The collected data is processed through an “image-sound-image” data conversion workflow, transforming environmental information into a different yet clearly perceptible sensory representation, which enhances both the depth and breadth of monitoring. The processed data is visualized on the platform, enabling operators to track cooling performance and environmental changes in real time. Based on continuous feedback, the system dynamically adjusts the placement and deployment strategies of the devices, forming a closed-loop operational process. This mechanism not only significantly improves operational efficiency but also achieves adaptive, data-driven regulation of the urban climate.</p>
+                        <p>The system operates through a centralized platform that integrates environmental sensing, device deployment, and real-time monitoring for responsive urban cooling. Cooling is triggered either automatically based on environmental thresholds or manually by operators.
+The platform analyzes spatial data to identify heat-critical areas and deploys “solar umbrella” devices, which unfold to regulate solar radiation and reduce heat. Each device performs localized scanning, and the data is translated through an image–sound–image workflow for real-time visualization.</p>
                     </div>
 
                 </div> 
@@ -91,8 +101,10 @@ The collected data is processed through an “image-sound-image” data conversi
                 <div class="projectcontent">
 
                     <div class="work-description">
-                        <p>The centralized control platform functions as the core of the system, integrating environmental data, spatial analysis, and device coordination into a unified operational interface. It continuously collects data from environmental sensors, spatial scans, and deployed devices, and processes this information to identify heat-critical zones and prioritize intervention areas. 
-Based on these insights, the platform dynamically dispatches cooling devices and adjusts their deployment in response to changing conditions. Through real-time visualization and feedback, the platform enables operators to monitor system performance, evaluate cooling effectiveness, and make informed decisions.</p>
+                        <p>The system uses a cross-modal workflow to convert spatial data into audio signals and reconstruct it into visual outputs.
+Environmental images are encoded into binary data and transformed into sound through sonification and signal modulation.
+The audio is transmitted and decoded by receivers, where it is reconstructed into images, similar to remote sensing and radar-based imaging processes.
+This continuous image–audio–image loop enables real-time visualization of temperature changes and cooling effects.</p>
                     </div>
 
                     <div class="project-img">
@@ -103,7 +115,7 @@ Based on these insights, the platform dynamically dispatches cooling devices and
 
 
                 <div class="work-title">
-                    <h2>Particle-Fluid Analysis: AI Calculation of Fluffy Accumulation Points</h2>
+                    <h2>sky-ground information transfer</h2>
                 </div>
 
                 <div class="projectcontent-grid">
@@ -117,7 +129,7 @@ By continuously cycling through this image-audio-image pipeline, the system enab
                     </div>
 
                     <div class="project-img-environmentdata">
-                        <img src="./images/ground-sky.png" alt="project" style="width: 70%;"/>
+                        <img src="./images/ground-sky.png" alt="project" style="width: 100%;"/>
                     </div>
 
                     <div class="project-img">
@@ -125,13 +137,16 @@ By continuously cycling through this image-audio-image pipeline, the system enab
                     </div>
 
                     <div class="work-description">
-                        <p>A functional prototype was developed to simulate the device's deployment behavior and data transmission workflow within the system.
-
-The prototype integrates a Raspberry Pi as the central control unit, coordinating signal reception, actuation, and data processing. Upon receiving a trigger signal, the system activates a set of servo motors to control the opening and closing of the device's functional panels, simulating the physical deployment of the “solar umbrella” structure. In parallel, the prototype demonstrates the data translation process by encoding binary information into both visual and audio outputs. LED indicators represent binary signals as light patterns, while an audio module converts the same data into sound via a buzzer. A GPS module provides basic location awareness, allowing the system to associate incoming signals with spatial positioning. The integrated audio input/output module supports signal reception and playback, completing the loop of data encoding, transmission, and reconstruction.
-The prototype focuses on validating the system logic rather than the final form, emphasizing the interaction among signal processing, mechanical response, and data feedback.</p>
+                        <p>A functional prototype was developed to simulate device deployment and data transmission within the system.
+It uses a Raspberry Pi to coordinate signal input, mechanical actuation, and data processing, triggering the deployment of a servo-controlled panel. The prototype encodes binary data into visual (LED) and audio (buzzer) outputs, with GPS and audio modules supporting positioning and signal transmission.
+It validates the system logic by linking signal processing, physical response, and data feedback.</p>
                     </div>
                     
                 </div> 
+
+                <video controls autoplay muted loop playsinline style="width: 100%; margin-top: 40px;">
+                    <source src="./images/video/sunpanel1.mp4" type="video/mp4">
+                </video>
 
             </div>
 

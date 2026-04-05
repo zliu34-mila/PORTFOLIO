@@ -204,7 +204,7 @@ nav::before {
   flex-direction: column;
   gap: 0;
   margin-top: 20px;
-  padding: 0 60px;
+  padding: 0 100px;
   counter-reset: section;
 }
 
@@ -216,12 +216,18 @@ nav::before {
   flex-direction: column;
   gap: 20px;
   align-items: center;
-  padding: 30px 0;
+  padding: 30px 0  80px;
   position: relative;
   margin-top: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.37);
 }
 
 /* 文字区域 */
+.work-title{
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
 .work-title,
 .work-description {
   width: 80%;
@@ -229,6 +235,8 @@ nav::before {
   flex-direction: column;
   gap: 20px;
 }
+
+
 
 .work-title h2 {
   font-family: 'Google Sans Flex', sans-serif;
@@ -243,7 +251,7 @@ nav::before {
 
 .work-description p {
   font-family: 'Google Sans Flex', sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   color: var(--white);
   line-height: 1.8;
@@ -296,11 +304,9 @@ nav::before {
   filter: brightness(0.97);
 }
 
-
 .project-img-environmentdata {
     display: flex;
     width: 90%;
-    margin-top: 40px;
     justify-content: center;
     overflow: hidden;
     border-radius: 4px;
@@ -319,6 +325,7 @@ nav::before {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
+    margin-top: 20px;
 }
 
 .projectcontent-grid img{
@@ -333,6 +340,17 @@ nav::before {
 .project-img:hover img {
   transform: scale(1.04);
   filter: brightness(1.02);
+}
+
+.project-img-big{
+    height: 600px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+    margin-top: 50px;
 }
 
 /* ─────────────────────────────────────

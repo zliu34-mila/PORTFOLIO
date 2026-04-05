@@ -304,7 +304,7 @@ nav::before {
 .section-artworks h1 {
     display: flex;
     font-family: 'Google Sans Flex', sans-serif;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.5;
@@ -344,7 +344,7 @@ nav::before {
 
 .previouswork-description h2 {
     font-family: 'Google Sans Flex', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
     margin: 12px 0 0 0;
     color: var(--ink);

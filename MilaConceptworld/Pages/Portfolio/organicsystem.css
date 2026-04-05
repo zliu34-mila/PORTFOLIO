@@ -275,7 +275,7 @@ nav::before {
   grid-template-columns: 1fr 1fr;
   gap: 40px 60px;
   align-items: start;
-  padding: 24px 0 48px;
+  padding: 200px 0 48px;
 }
 
 .Idid{
@@ -299,7 +299,7 @@ nav::before {
 
 .work-description h3 {
   font-family: 'Google Sans Flex', sans-serif;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--black);
   margin-bottom: 50px;
@@ -309,7 +309,7 @@ nav::before {
 
 .work-description p {
   font-family: 'Google Sans Flex', sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   color: var(--black);
   line-height: 1.9;
@@ -321,15 +321,37 @@ nav::before {
 /* ─────────────────────────────────────
    IMAGES
 ───────────────────────────────────── */
+.project-img-big {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  position: relative;
+  justify-items: center;
+  align-items: center;
+} 
+
+
 .project-img {
   width: 100%;
   overflow: hidden;
   border-radius: 4px;
   position: relative;
-  justify-self: center;
+  justify-items: center;
+  align-items: center;
+  margin-top: 30px ;
 }
 
-.Uisystem .project-img { width: 80%; }
+.project-img img {
+  width: 70%;
+  height: auto;
+  object-fit: contain;
+  display: flex;
+  margin: 0 auto;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: brightness(0.97);
+}
+
+.Uisystem { width: 80%; }
 
 .project-img-2{
   display: grid;
@@ -364,16 +386,6 @@ nav::before {
 
 .project-img-3 .work-description{
   grid-column: 1 / -1;
-}
-
-
-.project-img img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  filter: brightness(0.97);
 }
 
 .project-img:hover img {
@@ -499,7 +511,7 @@ nav::before {
 ───────────────────────────────────── */
 @media (min-width: 769px) and (max-width: 1440px) {
   nav { height: 72px; padding: 0 36px; }
-  .nav-home { font-size: 14px; padding: 0 28px 0 0; }
+  .nav-home { font-size: 16px; padding: 0 28px 0 0; }
   .tab-btn, .tab-rightbtn { font-size: 11px; padding: 0 16px; }
 
   .show-video { top: 72px; }
