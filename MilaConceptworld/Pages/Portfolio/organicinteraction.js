@@ -44,8 +44,8 @@ document.head.appendChild(styleTag);
 
 // 👉 把文件路径换成你实际的页面地址
 const tabPageMap = {
-  'previous works': './index.html',
-  'processing works': './processing-works.html',
+  'projects': './index.html',
+  'activities': './processing-works.html',
 };
 
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
