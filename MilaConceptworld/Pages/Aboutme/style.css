@@ -225,7 +225,7 @@ nav::before {
 }
 .details .description {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.75;
   color: var(--black);
   max-width: 480px;
