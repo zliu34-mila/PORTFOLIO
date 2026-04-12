@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>wearable product</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Jost:ital,wght@0,100..900;1,100..900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./wearablestyle.css"/>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+        
+    <!-- NAV -->
+        <div id="cursor"></div>
+        <nav>
+            <a class="nav-home" href="../../index.html">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7L7 1L13 7V13H9V9H5V13H1V7Z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+                <span>Home</span>
+            </a>
+
+            <div class="nav-tabs">
+                <button class="tab-btn" href="./index.html" data-tab="previous works">Projects</button>
+                <button class="tab-btn" href="./processing-works.html" data-tab="processing works">Activities</button>
+                <button class="tab-rightbtn" href="../../index.html" data-tab="see my CV">see my CV</button>
+                <button class="tab-rightbtn" href="../Portfolio/index.html" data-tab="back"> < back </button>
+            </div>
+        </nav>
+        
+        <div class="scroll-wrapper">
+
+            <div class="project-img">
+                <img src="./images/surgery-prototype.png" alt="project"/>
+            </div>
+        
+            <h1>Medical Somatosensory Interaction prototype </h1>
+
+            <div class="container">
+
+                <div class="work-title">
+                    <h2>introduction</h2>
+                </div>
+
+                <div class="work-description">
+                    <p>Most current AR/VR medical training devices rely primarily on visual and auditory input, but in real surgery the most crucial factor is force feedback. Existing AI training systems cannot yet simulate the control of incision depth or the counterforce of tissue when using a scalpel. Moreover, most devices still follow a linear, procedural training model, whereas real surgeries involve non-linear decision-making and on-the-spot adjustments—and data related to these aspects is often missing or not recorded.</p>
+                </div>
+
+
+                <div class="work-title">
+                    <h2>what i try to do</h2>
+                </div>
+
+                <div class="work-description">
+                    <p>In this project, I focus on simulating force feedback during surgical procedures and on machine autonomous deep learning.
+This prototype interactive device integrates motion-based interaction, haptic feedback, and an adaptive learning mechanism. By using AI to continuously learn from and model data such as force, spatial coordinates, and operation depth during procedures, it provides medical professionals with a preoperative simulation and training experience that more closely approximates real tactile sensations.</p>
+                </div>
+
+                <div class="work-title">
+                     <h2>AI computing system</h2>
+                </div>
+
+                <div class="projectcontent">
+
+                    <div class="work-description">
+                        <p>Masked image modeling technology trains AI to complete autonomous image learning and helps doctors analyze medical images.</p>
+                    </div>
+                    
+                    <div class="project-img">
+                        <img src="./images/surgery-system.png" alt="project"/>
+                    </div>
+
+                </div>
+
+
+                <div class="work-title">
+                    <h2>prototype</h2>
+                </div>
+
+                <div class="projectcontent">
+
+                    <div class="work-description">
+                        <p>Images to 3d model: 
+
+Use AI algorithms to extract features and calculate depth from 2D images to infer the 3D structure of the image; then, use the depth information to generate a 3D mesh model; Finally, we use texture mapping to assign the image texture to the 3D model.
+                        </p>
+                    </div>          
+
+                    <div class="project-img">
+                        <img src="./images/surgery-imagegener.png" alt="project" width="60%"/>
+                    </div>
+
+                    <div class="work-description">
+                        <p>Prototype interaction device: 
+                            
+Doctors can obtain a 3D perspective from 2D CT images, so that complex internal structures can be intuitively displayed and analyzed, helping medical professionals obtain more detailed organ information.
+                        </p>
+                    </div>
+
+                    <div class="project-img">
+                        <img src="./images/surgery-imagegener1.png" alt="project"/>
+                    </div>
+
+                </div>
+
+                <div class="project-img">
+                    <img src="./images/surgery-structure.png" alt="project"/>
+                </div>
+
+                <div class="work-title">
+                     <h2>somatosensory interaction analysis</h2>
+                </div>
+                
+                <div class="projectcontent">
+                    <div class="work-description">
+                        <p>Work principle : 
+                            
+When holding the interactive handle for surgical simulation, the user actively generates three-axis changes and force output; the handle will continuously monitor the posture data through the MPU9250 sensor, and dynamically adjust the speed of the motor to simulate the reaction force to the user's input force, respond to real-time posture changes, and complete the device's force feedback somatosensory interaction process.
+                        </p>
+                    </div>
+                    <div class="project-img">
+                        <img src="./images/surgery-structuremath.png" alt="project"/>
+                    </div>
+                </div>
+
+                 <div class="work-title">
+                     <h2>final result</h2>
+                </div>
+                
+                <div class="project-img-2">
+                    <img src="./images/surgery-prototype1.png" alt="project"/>
+                    <img src="./images/surgery-prototype3.png" alt="project"/>
+                </div>
+
+                <div class="project-img">
+                    <img src="./images/surgery-prototype2.png" alt="project"/>
+                </div>
+
+            </div>
+
+        </div>
+       
+
+        
+</body>
+
+<footer class="page-footer">
+        <div class="additional-info">
+            <div class="copyright">
+                    <p>© 2024 Mila Concept World. All rights reserved.</p>
+            </div>
+            <button class="back-to-top" onclick="scrollToTop()">Back to Top</button>
+        </div>
+</footer>
+
+<script src="./wearableinteraction.js"></script>
+
+</html>
